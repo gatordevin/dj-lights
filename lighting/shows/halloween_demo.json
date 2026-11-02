@@ -1,0 +1,355 @@
+{
+ "bpm": 120,
+ "notes": "Pre-programmed demo (no music sync): ~2 min at 120 BPM. Beams (crossbar, ~3 m) sweep out over the crowd centred 60-70 deg from vertical, i.e. 20-30 deg above horizontal; spiders (sideways on the uprights) fan left-right. Check: python3 lighting/stage3d.py audit",
+ "cues": {
+  "intro": [
+   {
+    "group": "all",
+    "effect": "fade",
+    "colors": [
+     "purple",
+     "orange"
+    ],
+    "beats": 8,
+    "spread": 0.5
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "circle",
+    "pan": 60,
+    "tilt": 30,
+    "center": [
+     0,
+     65
+    ],
+    "beats": 16
+   },
+   {
+    "group": "spiders",
+    "effect": "sweep",
+    "shape": "tilt_wave",
+    "tilt": 60,
+    "beats": 8,
+    "spread": 0.5
+   }
+  ],
+  "chase": [
+   {
+    "group": "all",
+    "effect": "chase",
+    "colors": [
+     "orange",
+     "purple",
+     "green"
+    ],
+    "beats": 1
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "fan",
+    "pan": 90,
+    "center": [
+     0,
+     70
+    ],
+    "beats": 8
+   },
+   {
+    "group": "spiders",
+    "effect": "sweep",
+    "shape": "tilt_wave",
+    "tilt": 80,
+    "beats": 4,
+    "spread": 0.5
+   }
+  ],
+  "rainbow": [
+   {
+    "group": "all",
+    "effect": "rainbow",
+    "beats": 8,
+    "spread": 0.3
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "figure8",
+    "pan": 80,
+    "tilt": 30,
+    "center": [
+     0,
+     62
+    ],
+    "beats": 8
+   },
+   {
+    "group": "spiders",
+    "effect": "sweep",
+    "shape": "tilt_wave",
+    "tilt": 60,
+    "beats": 8,
+    "spread": 0.25
+   }
+  ],
+  "pulse": [
+   {
+    "group": "all",
+    "effect": "pulse",
+    "color": "green",
+    "beats": 1,
+    "decay": 3,
+    "floor": 0.1
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "tilt_wave",
+    "tilt": 40,
+    "center": [
+     0,
+     60
+    ],
+    "beats": 4,
+    "spread": 0.5
+   },
+   {
+    "group": "spiders",
+    "effect": "sweep",
+    "shape": "tilt_wave",
+    "tilt": 90,
+    "beats": 2,
+    "spread": 0.5
+   }
+  ],
+  "ballyhoo": [
+   {
+    "group": "all",
+    "effect": "rainbow",
+    "beats": 2,
+    "spread": 0.5
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "ballyhoo",
+    "pan": 100,
+    "tilt": 36,
+    "center": [
+     0,
+     62
+    ],
+    "beats": 4
+   },
+   {
+    "group": "spiders",
+    "effect": "sweep",
+    "shape": "tilt_wave",
+    "tilt": 100,
+    "beats": 2,
+    "spread": 0.5
+   }
+  ],
+  "strobe_hit": [
+   {
+    "group": "all",
+    "effect": "strobe",
+    "rate": 0.7,
+    "color": "white"
+   },
+   {
+    "group": "beams",
+    "effect": "aim",
+    "pan": 0,
+    "tilt": 70
+   },
+   {
+    "group": "spiders",
+    "effect": "aim",
+    "pan": 0,
+    "tilt": 0
+   }
+  ],
+  "spooky": [
+   {
+    "group": "all",
+    "effect": "fade",
+    "colors": [
+     "green",
+     "purple",
+     "uv"
+    ],
+    "beats": 16,
+    "spread": 0.33,
+    "dimmer": 0.8
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "pan_wave",
+    "pan": 120,
+    "center": [
+     0,
+     70
+    ],
+    "beats": 32,
+    "spread": 0.5
+   },
+   {
+    "group": "spiders",
+    "effect": "sweep",
+    "shape": "tilt_wave",
+    "tilt": 60,
+    "beats": 16,
+    "spread": 0.5
+   }
+  ],
+  "blackout": [
+   {
+    "group": "all",
+    "effect": "blackout"
+   }
+  ],
+  "kick_pulse": [
+   {
+    "group": "all",
+    "effect": "pulse",
+    "color": "purple",
+    "trigger": "onset",
+    "decay": 5,
+    "floor": 0.08
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "fan",
+    "pan": 90,
+    "center": [
+     0,
+     68
+    ],
+    "beats": 8
+   },
+   {
+    "group": "spiders",
+    "effect": "sweep",
+    "shape": "tilt_wave",
+    "tilt": 70,
+    "beats": 4,
+    "spread": 0.5
+   }
+  ],
+  "bass_wash": [
+   {
+    "group": "pars",
+    "effect": "fade",
+    "colors": [
+     "orange",
+     "red"
+    ],
+    "beats": 16,
+    "react": "bass",
+    "floor": 0.15
+   },
+   {
+    "group": "movers",
+    "effect": "rainbow",
+    "beats": 4,
+    "spread": 0.25,
+    "react": "level",
+    "floor": 0.2
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "circle",
+    "pan": 60,
+    "tilt": 24,
+    "center": [
+     0,
+     65
+    ],
+    "beats": 16
+   },
+   {
+    "group": "spiders",
+    "effect": "sweep",
+    "shape": "tilt_wave",
+    "tilt": 50,
+    "beats": 8,
+    "spread": 0.5
+   }
+  ]
+ },
+ "program": [
+  [
+   "intro",
+   8
+  ],
+  [
+   "chase",
+   8
+  ],
+  [
+   "rainbow",
+   8
+  ],
+  [
+   "pulse",
+   8
+  ],
+  [
+   "ballyhoo",
+   4
+  ],
+  [
+   "strobe_hit",
+   1
+  ],
+  [
+   "spooky",
+   8
+  ]
+ ],
+ "songs": {
+  "example_128": {
+   "bpm": 128,
+   "bars": 72,
+   "notes": "template: copy, rename to the track, set its bar numbers (bar 1 = first downbeat)",
+   "cues": [
+    [
+     1,
+     "spooky"
+    ],
+    [
+     9,
+     "intro"
+    ],
+    [
+     17,
+     "chase"
+    ],
+    [
+     33,
+     "kick_pulse"
+    ],
+    [
+     49,
+     "ballyhoo"
+    ],
+    [
+     57,
+     "strobe_hit"
+    ],
+    [
+     58,
+     "bass_wash"
+    ]
+   ]
+  }
+ },
+ "include": [
+  "gators"
+ ]
+}

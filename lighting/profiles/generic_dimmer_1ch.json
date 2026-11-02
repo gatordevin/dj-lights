@@ -1,0 +1,30 @@
+{
+ "name": "generic_dimmer_1ch",
+ "maker": "generic",
+ "model": "single-channel dimmer / white light",
+ "type": "par",
+ "status": "template",
+ "source": "generic template: the most common channel layout for this class of light. Check your light's manual: if the channel order differs, copy this file or build one with `python3 lighting/dj.py fixtures new`.",
+ "notes": "",
+ "channels": {
+  "dimmer": {
+   "role": "dimmer"
+  }
+ },
+ "modes": {
+  "1ch": [
+   "dimmer"
+  ]
+ },
+ "default_mode": "1ch",
+ "optics": {
+  "beam_deg": 25,
+  "lumens": 700,
+  "aperture": 0.08,
+  "body": [
+   0.17,
+   0.13,
+   0.18
+  ]
+ }
+}

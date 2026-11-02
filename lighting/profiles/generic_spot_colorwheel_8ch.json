@@ -1,0 +1,140 @@
+{
+ "name": "generic_spot_colorwheel_8ch",
+ "maker": "generic",
+ "model": "LED spot moving head with colour wheel + gobo, 8-channel (pan tilt colour gobo strobe dimmer speed mode)",
+ "type": "moving_head",
+ "status": "template",
+ "source": "generic template: the most common channel layout for this class of light. Check your light's manual: if the channel order differs, copy this file or build one with `python3 lighting/dj.py fixtures new`.",
+ "notes": "Colours come from the wheel: the show picks the nearest slot to the colour it wants.",
+ "pan_deg": 540,
+ "tilt_deg": 270,
+ "channels": {
+  "pan": {
+   "role": "pan"
+  },
+  "tilt": {
+   "role": "tilt"
+  },
+  "color_wheel": {
+   "role": "wheel",
+   "slots": [
+    {
+     "value": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "name": "open"
+    },
+    {
+     "value": 10,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "name": "red"
+    },
+    {
+     "value": 20,
+     "rgb": [
+      1,
+      0.45,
+      0
+     ],
+     "name": "orange"
+    },
+    {
+     "value": 30,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "name": "yellow"
+    },
+    {
+     "value": 40,
+     "rgb": [
+      0,
+      1,
+      0
+     ],
+     "name": "green"
+    },
+    {
+     "value": 50,
+     "rgb": [
+      0,
+      0,
+      1
+     ],
+     "name": "blue"
+    },
+    {
+     "value": 60,
+     "rgb": [
+      0,
+      1,
+      1
+     ],
+     "name": "cyan"
+    },
+    {
+     "value": 70,
+     "rgb": [
+      1,
+      0,
+      1
+     ],
+     "name": "magenta"
+    }
+   ],
+   "notes": "slot values vary by unit: fix them from the manual"
+  },
+  "gobo": {
+   "role": "raw",
+   "default": 0,
+   "notes": "0 = open (no gobo)"
+  },
+  "strobe": {
+   "role": "strobe",
+   "notes": "0 = open, no strobe"
+  },
+  "dimmer": {
+   "role": "dimmer"
+  },
+  "speed": {
+   "role": "speed",
+   "notes": "0 = fastest"
+  },
+  "mode": {
+   "role": "program",
+   "notes": "keep 0"
+  }
+ },
+ "modes": {
+  "8ch": [
+   "pan",
+   "tilt",
+   "color_wheel",
+   "gobo",
+   "strobe",
+   "dimmer",
+   "speed",
+   "mode"
+  ]
+ },
+ "default_mode": "8ch",
+ "optics": {
+  "beam_deg": 15,
+  "lumens": 1500,
+  "aperture": 0.05,
+  "body": [
+   0.22,
+   0.16,
+   0.32
+  ]
+ }
+}

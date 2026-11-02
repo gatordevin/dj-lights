@@ -1,0 +1,58 @@
+{
+ "name": "coz_par36_rgb",
+ "maker": "CO-Z",
+ "model": "36 LED RGB par WTD-36X4-RC (B0CN35RZHB)",
+ "type": "par",
+ "status": "partial",
+ "source": "dimmer=ch1 and green=ch3 confirmed on the unit 2026-10-12; rest from the QLC+ U`King Par 36 7-channel chart (same OEM layout)",
+ "notes": "Display d001..d512 = DMX mode + address. Other display modes (cc/rb/pl/sd/fl/soud) are built-in programs. No channel-mode setting.",
+ "channels": {
+  "dimmer": {
+   "role": "dimmer"
+  },
+  "red": {
+   "role": "red"
+  },
+  "green": {
+   "role": "green"
+  },
+  "blue": {
+   "role": "blue"
+  },
+  "strobe": {
+   "role": "strobe",
+   "notes": "0-7 no strobe, 8-255 slow→fast"
+  },
+  "program": {
+   "role": "program",
+   "notes": "0-10 manual (DMX colours), higher = built-in programs; keep 0"
+  },
+  "program_speed": {
+   "role": "program",
+   "notes": "speed for the programs"
+  }
+ },
+ "modes": {
+  "7ch": [
+   "dimmer",
+   "red",
+   "green",
+   "blue",
+   "strobe",
+   "program",
+   "program_speed"
+  ]
+ },
+ "default_mode": "7ch",
+ "optics": {
+  "beam_deg": 25,
+  "lumens": 700,
+  "aperture": 0.08,
+  "body": [
+   0.17,
+   0.13,
+   0.18
+  ],
+  "notes": "36x1 W RGB, 25 deg"
+ }
+}

@@ -1,0 +1,1006 @@
+{
+ "name": "uking_laser_zq05031",
+ "maker": "U`King",
+ "model": "ZQ05031 RGB animation laser (B08SJ8MRD4)",
+ "type": "laser",
+ "status": "documented",
+ "source": "official manual PDF https://m.media-amazon.com/images/I/81gFgAQgeXL.pdf: 34CH chart (read in full 2026-10-27), simple 6CH chart p.5. 34CH = two 17-channel groups: CH1-17 group A, CH18-34 group B (CH18 = group on/off; CH20 no function).",
+ "notes": "Laser output must remain disabled pending actual warning-label/class, compliance and installation review. Never scan an audience or aim at eyes, reflective surfaces, aircraft or the sky. Haze or trees are not proof of safe beam termination. Engine laser_armed is a software interlock, not laser safety certification. 34CH: BOTH on/off channels (CH1 and CH18) must be 0 for the laser to be dark; the engine forces role-laser channels to 0 unless laser_armed. The manual has NO plain 'manual DMX on' value on CH1 in 34CH mode (1-99 auto, 100-199 sound, 200-254 saving, 255 pattern A off): which value gives DMX-controlled patterns must be found by a supervised test. (default_mode stays 6ch for compatibility; the rig entry for the real unit sets mode 34ch.)",
+ "channels": {
+  "laser": {
+   "role": "laser",
+   "notes": "0 off, 1-255 on"
+  },
+  "movement": {
+   "role": "program",
+   "ranges": [
+    [
+     0,
+     31,
+     "preset effects auto"
+    ],
+    [
+     32,
+     63,
+     "serial auto"
+    ],
+    [
+     64,
+     95,
+     "mixed auto"
+    ],
+    [
+     96,
+     127,
+     "saving"
+    ],
+    [
+     128,
+     159,
+     "effects sound"
+    ],
+    [
+     160,
+     191,
+     "serial sound"
+    ],
+    [
+     192,
+     223,
+     "mixed sound"
+    ],
+    [
+     224,
+     255,
+     "saving"
+    ]
+   ]
+  },
+  "group": {
+   "role": "raw",
+   "notes": "pattern group"
+  },
+  "pattern": {
+   "role": "raw",
+   "notes": "pattern/theme within group"
+  },
+  "color": {
+   "role": "raw",
+   "ranges": [
+    [
+     0,
+     31,
+     "full colour"
+    ],
+    [
+     32,
+     63,
+     "red"
+    ],
+    [
+     64,
+     95,
+     "yellow"
+    ],
+    [
+     96,
+     127,
+     "green"
+    ],
+    [
+     128,
+     159,
+     "cyan"
+    ],
+    [
+     160,
+     191,
+     "blue"
+    ],
+    [
+     192,
+     223,
+     "pink"
+    ],
+    [
+     224,
+     255,
+     "white"
+    ]
+   ]
+  },
+  "speed": {
+   "role": "raw",
+   "notes": "0 no movement, 1-255 slow\u2192fast"
+  },
+  "a_laser": {
+   "role": "laser",
+   "notes": "CH1: 0 OFF is the only value guaranteed dark; 1-99 AUTO, 100-199 sound, 200-254 saving, 255 pattern A OFF",
+   "ranges": [
+    [
+     0,
+     0,
+     "laser OFF"
+    ],
+    [
+     1,
+     99,
+     "AUTO"
+    ],
+    [
+     100,
+     199,
+     "sound active"
+    ],
+    [
+     200,
+     254,
+     "saving"
+    ],
+    [
+     255,
+     255,
+     "pattern A OFF"
+    ]
+   ]
+  },
+  "a_bounds": {
+   "role": "raw",
+   "notes": "out of bounds and pattern size",
+   "ranges": [
+    [
+     0,
+     49,
+     "out-of-bounds crossing"
+    ],
+    [
+     50,
+     99,
+     "out-of-bounds reentry"
+    ],
+    [
+     100,
+     149,
+     "out-of-bounds blanking"
+    ],
+    [
+     150,
+     199,
+     "pattern zoom out / blanking"
+    ],
+    [
+     200,
+     255,
+     "saving"
+    ]
+   ]
+  },
+  "a_group": {
+   "role": "raw",
+   "notes": "group selection: 0-223 group 1, 224-255 group 0",
+   "ranges": [
+    [
+     0,
+     223,
+     "group 1"
+    ],
+    [
+     224,
+     255,
+     "group 0"
+    ]
+   ]
+  },
+  "a_pattern": {
+   "role": "raw",
+   "notes": "pattern selection: each value one pattern; above the max, shows the max"
+  },
+  "a_zoom": {
+   "role": "raw",
+   "notes": "pattern zoom in/out",
+   "ranges": [
+    [
+     0,
+     127,
+     "static size"
+    ],
+    [
+     128,
+     159,
+     "dynamic zoom OUT (bigger=faster)"
+    ],
+    [
+     160,
+     191,
+     "dynamic zoom IN"
+    ],
+    [
+     192,
+     223,
+     "dynamic zoom IN/OUT"
+    ],
+    [
+     224,
+     255,
+     "zoom rotation"
+    ]
+   ]
+  },
+  "a_rotate": {
+   "role": "raw",
+   "notes": "pattern rotation",
+   "ranges": [
+    [
+     0,
+     127,
+     "static"
+    ],
+    [
+     128,
+     159,
+     "rotation 2 circles cw+ccw"
+    ],
+    [
+     160,
+     191,
+     "rotation 1 circle cw+ccw"
+    ],
+    [
+     192,
+     223,
+     "rotation clockwise (bigger=faster)"
+    ],
+    [
+     224,
+     255,
+     "rotation counter-clockwise"
+    ]
+   ]
+  },
+  "a_x_move": {
+   "role": "raw",
+   "notes": "X moving",
+   "ranges": [
+    [
+     0,
+     127,
+     "static X"
+    ],
+    [
+     128,
+     159,
+     "UP moving wave"
+    ],
+    [
+     160,
+     191,
+     "DOWN moving wave"
+    ],
+    [
+     192,
+     223,
+     "LEFT moving"
+    ],
+    [
+     224,
+     255,
+     "RIGHT moving"
+    ]
+   ]
+  },
+  "a_y_move": {
+   "role": "raw",
+   "notes": "Y moving",
+   "ranges": [
+    [
+     0,
+     127,
+     "static Y"
+    ],
+    [
+     128,
+     159,
+     "RIGHT moving wave"
+    ],
+    [
+     160,
+     191,
+     "LEFT moving wave"
+    ],
+    [
+     192,
+     223,
+     "DOWN moving"
+    ],
+    [
+     224,
+     255,
+     "UP moving"
+    ]
+   ]
+  },
+  "a_x_zoom": {
+   "role": "raw",
+   "notes": "X zoom in/out",
+   "ranges": [
+    [
+     0,
+     127,
+     "static size"
+    ],
+    [
+     128,
+     159,
+     "UP moving distortion"
+    ],
+    [
+     160,
+     191,
+     "DOWN moving distortion"
+    ],
+    [
+     192,
+     223,
+     "zoom IN/OUT"
+    ],
+    [
+     224,
+     255,
+     "rotation zoom IN/OUT"
+    ]
+   ]
+  },
+  "a_y_zoom": {
+   "role": "raw",
+   "notes": "Y zoom in/out",
+   "ranges": [
+    [
+     0,
+     127,
+     "static size"
+    ],
+    [
+     128,
+     159,
+     "RIGHT moving distortion"
+    ],
+    [
+     160,
+     191,
+     "LEFT moving distortion"
+    ],
+    [
+     192,
+     223,
+     "zoom IN/OUT"
+    ],
+    [
+     224,
+     255,
+     "rotation zoom IN/OUT"
+    ]
+   ]
+  },
+  "a_fixed_color": {
+   "role": "raw",
+   "notes": "fixed colour setting: 0 original, 1-255 colour change with each n dot"
+  },
+  "a_color": {
+   "role": "raw",
+   "notes": "pattern colour change",
+   "ranges": [
+    [
+     0,
+     7,
+     "original colour"
+    ],
+    [
+     8,
+     15,
+     "red"
+    ],
+    [
+     16,
+     23,
+     "yellow"
+    ],
+    [
+     24,
+     31,
+     "green"
+    ],
+    [
+     32,
+     39,
+     "cyan"
+    ],
+    [
+     40,
+     47,
+     "blue"
+    ],
+    [
+     48,
+     55,
+     "pink"
+    ],
+    [
+     56,
+     63,
+     "white"
+    ],
+    [
+     64,
+     95,
+     "whole pattern RGB"
+    ],
+    [
+     96,
+     127,
+     "whole pattern YCP"
+    ],
+    [
+     128,
+     159,
+     "whole pattern RGBYCPW"
+    ],
+    [
+     160,
+     191,
+     "7 colour RGBYCPW"
+    ],
+    [
+     192,
+     223,
+     "sine chasing colour change"
+    ],
+    [
+     224,
+     255,
+     "cosine chasing colour change"
+    ]
+   ]
+  },
+  "a_dots": {
+   "role": "raw",
+   "notes": "dots",
+   "ranges": [
+    [
+     0,
+     63,
+     "original dots"
+    ],
+    [
+     64,
+     127,
+     "no dots, sweep line blanking"
+    ],
+    [
+     128,
+     159,
+     "no dots, sweep line no blanking"
+    ],
+    [
+     160,
+     255,
+     "saving"
+    ]
+   ]
+  },
+  "a_draw_fn": {
+   "role": "raw",
+   "notes": "drawing/other functions (with drawing channel): with drawing 0-127 pattern moving drawing all ON to keep the time; with 128-255 walking drawing line quantity"
+  },
+  "a_drawing": {
+   "role": "raw",
+   "notes": "drawing (with draw_fn)",
+   "ranges": [
+    [
+     0,
+     63,
+     "sine manual drawing"
+    ],
+    [
+     64,
+     127,
+     "cosine manual drawing"
+    ],
+    [
+     128,
+     159,
+     "dynamic drawing A"
+    ],
+    [
+     160,
+     191,
+     "dynamic drawing B"
+    ],
+    [
+     192,
+     223,
+     "dynamic drawing C"
+    ],
+    [
+     224,
+     255,
+     "dynamic drawing D"
+    ]
+   ]
+  },
+  "a_twist": {
+   "role": "raw",
+   "notes": "twist pattern change: the more value the less twisting"
+  },
+  "a_grating": {
+   "role": "raw",
+   "notes": "grating selection: steps of 20 select grating groups 1..13; bigger digit = smaller pattern"
+  },
+  "b_laser": {
+   "role": "laser",
+   "notes": "CH18: 0 OFF is the only value guaranteed dark; 1-99 AUTO, 100-199 sound, 200-254 saving, 255 group A OFF / group B ON",
+   "ranges": [
+    [
+     0,
+     0,
+     "all OFF"
+    ],
+    [
+     1,
+     99,
+     "AUTO"
+    ],
+    [
+     100,
+     199,
+     "sound"
+    ],
+    [
+     200,
+     254,
+     "saving"
+    ],
+    [
+     255,
+     255,
+     "group A OFF, group B ON"
+    ]
+   ]
+  },
+  "b_bounds": {
+   "role": "raw",
+   "notes": "out of bounds and pattern size",
+   "ranges": [
+    [
+     0,
+     49,
+     "out-of-bounds crossing"
+    ],
+    [
+     50,
+     99,
+     "out-of-bounds reentry"
+    ],
+    [
+     100,
+     149,
+     "out-of-bounds blanking"
+    ],
+    [
+     150,
+     199,
+     "pattern zoom out / blanking"
+    ],
+    [
+     200,
+     255,
+     "saving"
+    ]
+   ]
+  },
+  "b_blank": {
+   "role": "raw",
+   "notes": "CH20: no function"
+  },
+  "b_pattern": {
+   "role": "raw",
+   "notes": "pattern selection: each value one pattern; above the max, shows the max"
+  },
+  "b_zoom": {
+   "role": "raw",
+   "notes": "pattern zoom in/out",
+   "ranges": [
+    [
+     0,
+     127,
+     "static size"
+    ],
+    [
+     128,
+     159,
+     "dynamic zoom OUT (bigger=faster)"
+    ],
+    [
+     160,
+     191,
+     "dynamic zoom IN"
+    ],
+    [
+     192,
+     223,
+     "dynamic zoom IN/OUT"
+    ],
+    [
+     224,
+     255,
+     "zoom rotation"
+    ]
+   ]
+  },
+  "b_rotate": {
+   "role": "raw",
+   "notes": "pattern rotation",
+   "ranges": [
+    [
+     0,
+     127,
+     "static"
+    ],
+    [
+     128,
+     159,
+     "rotation 2 circles cw+ccw"
+    ],
+    [
+     160,
+     191,
+     "rotation 1 circle cw+ccw"
+    ],
+    [
+     192,
+     223,
+     "rotation clockwise (bigger=faster)"
+    ],
+    [
+     224,
+     255,
+     "rotation counter-clockwise"
+    ]
+   ]
+  },
+  "b_x_move": {
+   "role": "raw",
+   "notes": "X moving",
+   "ranges": [
+    [
+     0,
+     127,
+     "static X"
+    ],
+    [
+     128,
+     159,
+     "UP moving wave"
+    ],
+    [
+     160,
+     191,
+     "DOWN moving wave"
+    ],
+    [
+     192,
+     223,
+     "LEFT moving"
+    ],
+    [
+     224,
+     255,
+     "RIGHT moving"
+    ]
+   ]
+  },
+  "b_y_move": {
+   "role": "raw",
+   "notes": "Y moving",
+   "ranges": [
+    [
+     0,
+     127,
+     "static Y"
+    ],
+    [
+     128,
+     159,
+     "RIGHT moving wave"
+    ],
+    [
+     160,
+     191,
+     "LEFT moving wave"
+    ],
+    [
+     192,
+     223,
+     "DOWN moving"
+    ],
+    [
+     224,
+     255,
+     "UP moving"
+    ]
+   ]
+  },
+  "b_x_zoom": {
+   "role": "raw",
+   "notes": "X zoom in/out",
+   "ranges": [
+    [
+     0,
+     127,
+     "static size"
+    ],
+    [
+     128,
+     159,
+     "UP moving distortion"
+    ],
+    [
+     160,
+     191,
+     "DOWN moving distortion"
+    ],
+    [
+     192,
+     223,
+     "zoom IN/OUT"
+    ],
+    [
+     224,
+     255,
+     "rotation zoom IN/OUT"
+    ]
+   ]
+  },
+  "b_y_zoom": {
+   "role": "raw",
+   "notes": "Y zoom in/out",
+   "ranges": [
+    [
+     0,
+     127,
+     "static size"
+    ],
+    [
+     128,
+     159,
+     "RIGHT moving distortion"
+    ],
+    [
+     160,
+     191,
+     "LEFT moving distortion"
+    ],
+    [
+     192,
+     223,
+     "zoom IN/OUT"
+    ],
+    [
+     224,
+     255,
+     "rotation zoom IN/OUT"
+    ]
+   ]
+  },
+  "b_fixed_color": {
+   "role": "raw",
+   "notes": "fixed colour setting: 0 original, 1-255 colour change with each n dot"
+  },
+  "b_color": {
+   "role": "raw",
+   "notes": "pattern colour change",
+   "ranges": [
+    [
+     0,
+     7,
+     "original colour"
+    ],
+    [
+     8,
+     15,
+     "red"
+    ],
+    [
+     16,
+     23,
+     "yellow"
+    ],
+    [
+     24,
+     31,
+     "green"
+    ],
+    [
+     32,
+     39,
+     "cyan"
+    ],
+    [
+     40,
+     47,
+     "blue"
+    ],
+    [
+     48,
+     55,
+     "pink"
+    ],
+    [
+     56,
+     63,
+     "white"
+    ],
+    [
+     64,
+     95,
+     "whole pattern RGB"
+    ],
+    [
+     96,
+     127,
+     "whole pattern YCP"
+    ],
+    [
+     128,
+     159,
+     "whole pattern RGBYCPW"
+    ],
+    [
+     160,
+     191,
+     "7 colour RGBYCPW"
+    ],
+    [
+     192,
+     223,
+     "sine chasing colour change"
+    ],
+    [
+     224,
+     255,
+     "cosine chasing colour change"
+    ]
+   ]
+  },
+  "b_dots": {
+   "role": "raw",
+   "notes": "dots",
+   "ranges": [
+    [
+     0,
+     63,
+     "original dots"
+    ],
+    [
+     64,
+     127,
+     "no dots, sweep line blanking"
+    ],
+    [
+     128,
+     159,
+     "no dots, sweep line no blanking"
+    ],
+    [
+     160,
+     255,
+     "saving"
+    ]
+   ]
+  },
+  "b_draw_fn": {
+   "role": "raw",
+   "notes": "drawing/other functions (with drawing channel): with drawing 0-127 pattern moving drawing all ON to keep the time; with 128-255 walking drawing line quantity"
+  },
+  "b_drawing": {
+   "role": "raw",
+   "notes": "drawing (with draw_fn)",
+   "ranges": [
+    [
+     0,
+     63,
+     "sine manual drawing"
+    ],
+    [
+     64,
+     127,
+     "cosine manual drawing"
+    ],
+    [
+     128,
+     159,
+     "dynamic drawing A"
+    ],
+    [
+     160,
+     191,
+     "dynamic drawing B"
+    ],
+    [
+     192,
+     223,
+     "dynamic drawing C"
+    ],
+    [
+     224,
+     255,
+     "dynamic drawing D"
+    ]
+   ]
+  },
+  "b_twist": {
+   "role": "raw",
+   "notes": "twist pattern change: the more value the less twisting"
+  },
+  "b_grating": {
+   "role": "raw",
+   "notes": "grating selection: steps of 20 select grating groups 1..13; bigger digit = smaller pattern"
+  }
+ },
+ "modes": {
+  "6ch": [
+   "laser",
+   "movement",
+   "group",
+   "pattern",
+   "color",
+   "speed"
+  ],
+  "34ch": [
+   "a_laser",
+   "a_bounds",
+   "a_group",
+   "a_pattern",
+   "a_zoom",
+   "a_rotate",
+   "a_x_move",
+   "a_y_move",
+   "a_x_zoom",
+   "a_y_zoom",
+   "a_fixed_color",
+   "a_color",
+   "a_dots",
+   "a_draw_fn",
+   "a_drawing",
+   "a_twist",
+   "a_grating",
+   "b_laser",
+   "b_bounds",
+   "b_blank",
+   "b_pattern",
+   "b_zoom",
+   "b_rotate",
+   "b_x_move",
+   "b_y_move",
+   "b_x_zoom",
+   "b_y_zoom",
+   "b_fixed_color",
+   "b_color",
+   "b_dots",
+   "b_draw_fn",
+   "b_drawing",
+   "b_twist",
+   "b_grating"
+  ]
+ },
+ "default_mode": "6ch",
+ "optics": {
+  "beam_deg": 0.5,
+  "lumens": 0,
+  "aperture": 0.01,
+  "body": [
+   0.2,
+   0.15,
+   0.1
+  ]
+ }
+}

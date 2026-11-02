@@ -1,0 +1,35 @@
+{
+ "name": "generic_strobe_2ch",
+ "maker": "generic",
+ "model": "LED strobe, 2-channel (dimmer, rate)",
+ "type": "strobe",
+ "status": "template",
+ "source": "generic template: the most common channel layout for this class of light. Check your light's manual: if the channel order differs, copy this file or build one with `python3 lighting/dj.py fixtures new`.",
+ "notes": "Strobes are only used when the show is made with --strobe (flash safety).",
+ "channels": {
+  "dimmer": {
+   "role": "dimmer"
+  },
+  "strobe": {
+   "role": "strobe",
+   "notes": "flash rate, higher = faster"
+  }
+ },
+ "modes": {
+  "2ch": [
+   "dimmer",
+   "strobe"
+  ]
+ },
+ "default_mode": "2ch",
+ "optics": {
+  "beam_deg": 90,
+  "lumens": 3000,
+  "aperture": 0.12,
+  "body": [
+   0.3,
+   0.1,
+   0.15
+  ]
+ }
+}

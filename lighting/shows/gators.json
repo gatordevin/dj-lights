@@ -1,0 +1,378 @@
+{
+ "notes": "Gator game-day cues (UF orange + blue) and the light script for Tom Petty's 'I Won't Back Down' — the Swamp's end-of-3rd-quarter sing-along. Included by halloween_demo; usable from any show via \"include\": [\"gators\"]. Spider LEDs are fixed single colours (R, G, B, W cells), so spiders use red + blue; true UF orange is on the beams and pars.",
+ "bpm": 114,
+ "cues": {
+  "gator_glow": [
+   {
+    "group": "pars",
+    "effect": "fade",
+    "colors": [
+     "uf_blue",
+     "uf_orange"
+    ],
+    "beats": 16,
+    "spread": 0.5,
+    "dimmer": 0.7
+   },
+   {
+    "group": "movers",
+    "effect": "color",
+    "color": "uf_blue",
+    "dimmer": 0.35
+   },
+   {
+    "group": "spiders",
+    "effect": "color",
+    "color": "blue",
+    "dimmer": 0.35
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "pan_wave",
+    "pan": 40,
+    "center": [
+     0,
+     20
+    ],
+    "beats": 32,
+    "spread": 0.5
+   },
+   {
+    "group": "spiders",
+    "effect": "aim",
+    "tilt": 0
+   }
+  ],
+  "gator_verse": [
+   {
+    "group": "pars",
+    "effect": "color",
+    "color": "uf_blue"
+   },
+   {
+    "group": "movers",
+    "effect": "fade",
+    "colors": [
+     "uf_orange",
+     "uf_blue"
+    ],
+    "beats": 8,
+    "spread": 0.5
+   },
+   {
+    "group": "spiders",
+    "effect": "fade",
+    "colors": [
+     "red",
+     "blue"
+    ],
+    "beats": 8,
+    "spread": 0.5
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "fan",
+    "pan": 70,
+    "center": [
+     0,
+     62
+    ],
+    "beats": 16
+   },
+   {
+    "group": "spiders",
+    "effect": "sweep",
+    "shape": "tilt_wave",
+    "tilt": 50,
+    "beats": 8,
+    "spread": 0.5
+   }
+  ],
+  "gator_chorus": [
+   {
+    "group": "pars",
+    "effect": "chase",
+    "colors": [
+     "uf_orange",
+     "uf_blue"
+    ],
+    "beats": 2
+   },
+   {
+    "group": "movers",
+    "effect": "chase",
+    "colors": [
+     "uf_orange",
+     "uf_blue"
+    ],
+    "beats": 1
+   },
+   {
+    "group": "spiders",
+    "effect": "chase",
+    "colors": [
+     "red",
+     "blue"
+    ],
+    "beats": 1
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "chomp",
+    "pan": 70,
+    "center": [
+     0,
+     66
+    ],
+    "beats": 2
+   },
+   {
+    "group": "spiders",
+    "effect": "sweep",
+    "shape": "chomp",
+    "tilt": 80,
+    "beats": 2
+   }
+  ],
+  "gator_solo": [
+   {
+    "group": "pars",
+    "effect": "pulse",
+    "color": "uf_orange",
+    "beats": 1,
+    "decay": 3,
+    "floor": 0.25
+   },
+   {
+    "group": "movers",
+    "effect": "chase",
+    "colors": [
+     "uf_orange",
+     "white",
+     "uf_blue"
+    ],
+    "beats": 0.5
+   },
+   {
+    "group": "spiders",
+    "effect": "chase",
+    "colors": [
+     "red",
+     "white",
+     "blue"
+    ],
+    "beats": 0.5
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "ballyhoo",
+    "pan": 90,
+    "tilt": 30,
+    "center": [
+     0,
+     62
+    ],
+    "beats": 4
+   },
+   {
+    "group": "spiders",
+    "effect": "sweep",
+    "shape": "tilt_wave",
+    "tilt": 90,
+    "beats": 2,
+    "spread": 0.5
+   }
+  ],
+  "gator_singalong": [
+   {
+    "group": "pars",
+    "effect": "color",
+    "color": "uf_orange"
+   },
+   {
+    "group": "movers",
+    "effect": "pulse",
+    "color": "uf_orange",
+    "beats": 2,
+    "decay": 1.2,
+    "floor": 0.55
+   },
+   {
+    "group": "spiders",
+    "effect": "pulse",
+    "color": "red",
+    "beats": 2,
+    "decay": 1.2,
+    "floor": 0.55
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "pan_wave",
+    "pan": 50,
+    "center": [
+     0,
+     70
+    ],
+    "beats": 4,
+    "spread": 0.0
+   },
+   {
+    "group": "spiders",
+    "effect": "sweep",
+    "shape": "tilt_wave",
+    "tilt": 60,
+    "beats": 4,
+    "spread": 0.0
+   }
+  ],
+  "gator_finale": [
+   {
+    "group": "pars",
+    "effect": "chase",
+    "colors": [
+     "uf_orange",
+     "uf_blue"
+    ],
+    "beats": 1
+   },
+   {
+    "group": "movers",
+    "effect": "chase",
+    "colors": [
+     "uf_orange",
+     "uf_blue"
+    ],
+    "beats": 0.5
+   },
+   {
+    "group": "spiders",
+    "effect": "chase",
+    "colors": [
+     "red",
+     "blue"
+    ],
+    "beats": 0.5
+   },
+   {
+    "group": "beams",
+    "effect": "sweep",
+    "shape": "chomp",
+    "pan": 90,
+    "center": [
+     0,
+     64
+    ],
+    "beats": 1
+   },
+   {
+    "group": "spiders",
+    "effect": "sweep",
+    "shape": "chomp",
+    "tilt": 90,
+    "beats": 1
+   }
+  ],
+  "gator_hit": [
+   {
+    "group": "all",
+    "effect": "strobe",
+    "rate": 0.8,
+    "color": "uf_orange"
+   },
+   {
+    "group": "beams",
+    "effect": "aim",
+    "pan": 0,
+    "tilt": 20
+   },
+   {
+    "group": "spiders",
+    "effect": "aim",
+    "tilt": 0
+   }
+  ],
+  "gator_end": [
+   {
+    "group": "pars",
+    "effect": "color",
+    "color": "uf_blue",
+    "dimmer": 0.6
+   },
+   {
+    "group": "movers",
+    "effect": "color",
+    "color": "uf_orange"
+   },
+   {
+    "group": "spiders",
+    "effect": "color",
+    "color": "red"
+   },
+   {
+    "group": "beams",
+    "effect": "aim",
+    "pan": 0,
+    "tilt": 0
+   },
+   {
+    "group": "spiders",
+    "effect": "aim",
+    "tilt": 0
+   }
+  ]
+ },
+ "songs": {
+  "I Won't Back Down — Tom Petty": {
+   "bpm": 114,
+   "bars": 86,
+   "notes": "Studio version (Full Moon Fever, 1989), 114 BPM, G major, 2:58. Form from the pagemusiclessons.com chord chart: Intro 4 | Verse 1 (8 bars twice + 2-bar tag) 18 | Chorus 10 (6 + tag x2) | Verse 2 10 | Chorus 10 | Solo over verse 10 | Chorus 3 8 (no tag repeat) | Chorus 4 12 (tag x3) = 82 bars + ring-out. Bar 1 = the first strum of the intro. If cues land early/late, nudge the beat (console) or check the bar numbers against the track once.",
+   "cues": [
+    [
+     1,
+     "gator_glow"
+    ],
+    [
+     5,
+     "gator_verse"
+    ],
+    [
+     23,
+     "gator_chorus"
+    ],
+    [
+     33,
+     "gator_verse"
+    ],
+    [
+     43,
+     "gator_chorus"
+    ],
+    [
+     53,
+     "gator_solo"
+    ],
+    [
+     63,
+     "gator_singalong"
+    ],
+    [
+     71,
+     "gator_finale"
+    ],
+    [
+     81,
+     "gator_hit"
+    ],
+    [
+     83,
+     "gator_end"
+    ]
+   ]
+  }
+ }
+}

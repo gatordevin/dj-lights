@@ -1,0 +1,89 @@
+{
+ "name": "djxfli_beam90",
+ "maker": "DJXFLI",
+ "model": "90W RGBW mini beam moving head (B0C9DGTT7C)",
+ "type": "moving_head",
+ "status": "verified",
+ "source": "dimmer ch4 + blue/red/green ch8/6/7 confirmed on the unit 2026-10-12; owner read the printed manual chart 2026-10-12 (pan, tilt, XY speed, dimmer, strobe, R, G, B, W, colour auto, motor auto, auto, reset); earlier tests agree: ch10 cycles colours, ch11 moves randomly",
+ "notes": "Menu: Addr/CHnd 13CH/SLnd (SL 1 = DMX, SL 2 = slave, auto, soun)/bLnd (no-signal behaviour). Online 'LED Beam 90W' charts with pan/tilt fine channels do NOT match this unit. Speed (pan 120, tilt 90 deg/s at XY speed 0) is an ESTIMATE: on 2026-10-31 the owner saw the beams relight while still moving; time a full pan to refine.",
+ "pan_deg": 540,
+ "tilt_deg": 180,
+ "channels": {
+  "pan": {
+   "role": "pan"
+  },
+  "tilt": {
+   "role": "tilt"
+  },
+  "speed": {
+   "role": "speed",
+   "notes": "XY speed, 0 = fastest"
+  },
+  "dimmer": {
+   "role": "dimmer"
+  },
+  "strobe": {
+   "role": "strobe",
+   "notes": "0 = no strobe, higher = faster"
+  },
+  "red": {
+   "role": "red"
+  },
+  "green": {
+   "role": "green"
+  },
+  "blue": {
+   "role": "blue"
+  },
+  "white": {
+   "role": "white"
+  },
+  "color_auto": {
+   "role": "program",
+   "notes": "built-in colour cycling; keep 0 under DMX"
+  },
+  "motor_auto": {
+   "role": "program",
+   "notes": "built-in random movement; keep 0"
+  },
+  "auto": {
+   "role": "program",
+   "notes": "auto/sound show (255 = sound); keep 0"
+  },
+  "reset": {
+   "role": "reset",
+   "notes": "high values reset the head (~5 s dark)"
+  }
+ },
+ "modes": {
+  "13ch": [
+   "pan",
+   "tilt",
+   "speed",
+   "dimmer",
+   "strobe",
+   "red",
+   "green",
+   "blue",
+   "white",
+   "color_auto",
+   "motor_auto",
+   "auto",
+   "reset"
+  ]
+ },
+ "default_mode": "13ch",
+ "optics": {
+  "beam_deg": 2.5,
+  "lumens": 2500,
+  "aperture": 0.045,
+  "body": [
+   0.24,
+   0.2,
+   0.34
+  ],
+  "notes": "90 W RGBW beam; lumens estimated"
+ },
+ "pan_speed": 120,
+ "tilt_speed": 90
+}

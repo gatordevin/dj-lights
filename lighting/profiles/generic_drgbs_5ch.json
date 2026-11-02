@@ -1,0 +1,47 @@
+{
+ "name": "generic_drgbs_5ch",
+ "maker": "generic",
+ "model": "RGB par, 5-channel (dimmer R G B strobe)",
+ "type": "par",
+ "status": "template",
+ "source": "generic template: the most common channel layout for this class of light. Check your light's manual: if the channel order differs, copy this file or build one with `python3 lighting/dj.py fixtures new`.",
+ "notes": "",
+ "channels": {
+  "dimmer": {
+   "role": "dimmer"
+  },
+  "red": {
+   "role": "red"
+  },
+  "green": {
+   "role": "green"
+  },
+  "blue": {
+   "role": "blue"
+  },
+  "strobe": {
+   "role": "strobe",
+   "notes": "0 = no strobe, higher = faster (most units: 0-9 off)"
+  }
+ },
+ "modes": {
+  "5ch": [
+   "dimmer",
+   "red",
+   "green",
+   "blue",
+   "strobe"
+  ]
+ },
+ "default_mode": "5ch",
+ "optics": {
+  "beam_deg": 25,
+  "lumens": 700,
+  "aperture": 0.08,
+  "body": [
+   0.17,
+   0.13,
+   0.18
+  ]
+ }
+}

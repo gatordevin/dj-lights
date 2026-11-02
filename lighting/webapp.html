@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DJ Lights</title>
+<style>
+:root{
+  --bg:#0b0d12; --panel:#12161e; --panel2:#171c26; --line:#252c3a; --text:#e6e9ef; --muted:#8a93a6; --dim:#5d6578;
+  --accent:#7c5cff; --accent2:#22d3ee; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444; --radius:12px;
+  --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 var(--font)}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--accent2)}
+a.btn{text-decoration:none;color:#fff;display:inline-block}
+header{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 18px;
+  background:rgba(11,13,18,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:16px;letter-spacing:.2px}
+.brand .dot{width:14px;height:14px;border-radius:50%;background:conic-gradient(#f43f5e,#f59e0b,#22c55e,#22d3ee,#7c5cff,#f43f5e);box-shadow:0 0 14px #7c5cff88}
+.pill{padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid var(--line);background:var(--panel);color:var(--muted);white-space:nowrap}
+.pill.play{color:#86efac;border-color:#14532d;background:#052e16}.pill.live{color:#f0abfc;border-color:#701a75;background:#2e0a33}
+.pill.manual{color:#93c5fd;border-color:#1e3a8a;background:#0b1a3a}.pill.test{color:#fcd34d;border-color:#78350f;background:#2a1606}
+.transport{display:flex;gap:14px;align-items:baseline;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.transport b{color:var(--text);font-size:15px}
+.spacer{flex:1}
+#master{width:110px}
+@media (max-width:1400px){#tNext,#outBadge{display:none}}
+.ctl{display:flex;align-items:center;gap:8px}
+.btn{border:1px solid var(--line);background:var(--panel2);padding:7px 12px;border-radius:9px;cursor:pointer;transition:.12s;white-space:nowrap}
+.btn:hover{border-color:#3a4458;background:#1d2330}
+.btn.primary{background:linear-gradient(135deg,#7c5cff,#5b8cff);border-color:transparent;font-weight:600}
+.btn.primary:hover{filter:brightness(1.1)}
+.btn.danger{background:#2a0f12;border-color:#5b1a20;color:#fca5a5}
+.btn.on{background:#3b0a0f;border-color:var(--bad);color:#fff;box-shadow:0 0 0 2px #ef444455 inset}
+.btn.small{padding:4px 9px;font-size:12px;border-radius:7px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input[type=text],input[type=number],select,textarea{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:7px 10px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+input[type=range]{accent-color:var(--accent)}
+nav{display:flex;gap:4px;padding:10px 18px 0;border-bottom:1px solid var(--line);overflow-x:auto}
+nav button{background:none;border:none;padding:10px 14px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;font-weight:600}
+nav button.active{color:var(--text);border-bottom-color:var(--accent)}
+main{padding:18px;max-width:1500px;margin:0 auto}
+.tab{display:none}.tab.active{display:block}
+.grid{display:grid;gap:16px}
+.grid>*{min-width:0}
+.list .item span{overflow-wrap:anywhere}
+.g2{grid-template-columns:minmax(260px,330px) 1fr;align-items:start}
+.g2b{grid-template-columns:1fr 1fr}
+@media (max-width:980px){.g2,.g2b{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.card h3{margin:0 0 10px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.card h2{margin:0;font-size:18px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.muted{color:var(--muted)} .dim{color:var(--dim)} .mono{font-family:var(--mono)}
+.list{max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:9px}
+.list .item{padding:8px 10px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;justify-content:space-between;gap:8px}
+.list .item:hover{background:#161b25}.list .item.sel{background:#1c1838;box-shadow:inset 3px 0 0 var(--accent)}
+.list .item small{color:var(--dim);white-space:nowrap}
+.drop{border:1.5px dashed #354055;border-radius:10px;padding:14px;text-align:center;color:var(--muted);margin-top:10px}
+.drop.over{border-color:var(--accent);color:var(--text);background:#1a1733}
+canvas{display:block;width:100%;border-radius:10px;background:#07090d}
+#timeline{height:190px;cursor:crosshair}
+#stageBig{height:calc(100vh - 210px);min-height:420px;cursor:grab}
+#plan{height:440px;cursor:pointer}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{background:var(--panel2);border:none;padding:6px 11px;cursor:pointer;color:var(--muted)}
+.seg button.active{background:#2a2350;color:#fff}
+.swatches{display:flex;gap:3px}.swatches i{width:14px;height:14px;border-radius:4px;display:inline-block;border:1px solid #0006}
+.toggle{display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:var(--muted)}
+.lights{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.light{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px}
+.light .n{font-weight:600;font-size:12px;display:flex;justify-content:space-between}
+.light .heads{display:flex;gap:3px;margin-top:6px}.light .heads i{flex:1;height:22px;border-radius:5px;background:#000;transition:background .06s}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+td input[type=text]{width:100%;min-width:170px;padding:4px 7px} td input[type=number]{width:64px;padding:4px 7px}
+td.nw{white-space:nowrap}
+.kind{font-size:11px;padding:2px 7px;border-radius:999px;border:1px solid var(--line)}
+.kind.wash{color:#93c5fd}.kind.mover{color:#f0abfc}.kind.effect{color:#fcd34d}.kind.strobe{color:#fff}.kind.laser{color:#fca5a5}.kind.fog{color:#a7f3d0}
+.warn{color:#fcd34d;font-size:13px;margin:4px 0}.err{color:#fca5a5}
+.pads{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.pad{height:74px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(160deg,#1c2130,#141822);cursor:pointer;font-weight:700;font-size:14px;color:#dfe3ec;transition:.08s}
+.pad:hover{border-color:#4b5670}.pad.active{border-color:var(--accent);box-shadow:0 0 0 2px #7c5cff66,0 0 24px #7c5cff44 inset}
+.pad:active{transform:scale(.97)}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:6px 12px}
+pre{background:#07090d;border:1px solid var(--line);border-radius:9px;padding:10px;overflow:auto;font-size:12px;font-family:var(--mono);white-space:pre-wrap}
+#toast{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:50}
+#toast div{background:#1d2330;border:1px solid var(--line);padding:10px 14px;border-radius:10px;max-width:420px;box-shadow:0 8px 30px #0008}
+#toast div.e{border-color:#7f1d1d;background:#2a0f12}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--muted)}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.badge{font-size:11px;padding:2px 7px;border-radius:6px;background:#1d2330;color:var(--muted);border:1px solid var(--line)}
+.preview img{width:100%;border-radius:8px;image-rendering:pixelated;border:1px solid var(--line)}
+.views{position:absolute;top:10px;left:10px;display:flex;gap:6px}
+.rel{position:relative}
+.hint{position:absolute;bottom:10px;right:12px;font-size:11px;color:var(--dim);pointer-events:none}
+.stagewrap{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+@media (max-width:1100px){.stagewrap{grid-template-columns:1fr}}
+#stageMain{height:min(68vh,720px);min-height:420px;cursor:grab}
+#stageBig{height:calc(100vh - 190px);min-height:480px}
+.toolbar{position:absolute;top:10px;left:10px;right:10px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;pointer-events:none}
+.toolbar>*{pointer-events:auto}
+.toolbar .grow{flex:1}
+.glass{background:rgba(18,22,30,.78);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:9px;padding:4px 8px;font-size:12px;color:var(--muted)}
+.insp{position:sticky;top:76px}
+.insp h4{margin:14px 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim)}
+.insp .f{display:grid;grid-template-columns:62px 1fr 64px;gap:8px;align-items:center;margin:5px 0}
+.insp .f input[type=range]{width:100%}
+.insp .f input[type=number]{width:64px;padding:4px 6px}
+.insp .f2{display:grid;grid-template-columns:62px 1fr;gap:8px;align-items:center;margin:5px 0}
+.insp .f2 input[type=text],.insp .f2 select,.insp .f2 input[type=number]{width:100%;padding:5px 8px}
+.insp .title{display:flex;align-items:center;gap:8px}
+.insp .title input{font-weight:700;font-size:16px;background:transparent;border:1px solid transparent;padding:2px 6px;width:150px}
+.insp .title input:hover,.insp .title input:focus{border-color:var(--line)}
+.meter{height:6px;border-radius:4px;background:#1d2330;overflow:hidden}.meter i{display:block;height:100%;background:linear-gradient(90deg,#22d3ee,#7c5cff);width:0}
+.transportbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#cuePop{position:fixed;z-index:60;display:none;background:#151a24;border:1px solid #3a4458;border-radius:12px;padding:10px;box-shadow:0 12px 40px #000a;max-width:360px}
+#cuePop .pads{grid-template-columns:repeat(3,1fr);gap:6px}#cuePop .pad{height:38px;font-size:12px}
+.edited{color:#fcd34d}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="dot"></span>DJ Lights</div>
+  <select id="rigSel" title="rig"></select>
+  <span id="modePill" class="pill">IDLE</span>
+  <span id="outBadge" class="badge">output: –</span>
+  <div class="transport"><span>BAR <b id="tBar">–</b></span><span>BPM <b id="tBpm">–</b></span><span>CUE <b id="tCue">–</b></span><span id="tNext" class="dim"></span></div>
+  <div class="spacer"></div>
+  <div class="ctl"><span class="muted">Master</span><input id="master" type="range" min="0" max="100" value="100"><span id="masterV" class="mono dim">100%</span></div>
+  <button id="blackoutBtn" class="btn">Blackout</button>
+  <button id="stopBtn" class="btn danger">■ Stop</button>
+</header>
+<nav id="tabs">
+  <button data-tab="show" class="active">Show</button><button data-tab="stage">3D Stage</button><button data-tab="rig">Rig</button>
+  <button data-tab="live">Live &amp; Triggers</button><button data-tab="export">Export</button><button data-tab="setup">Setup</button>
+</nav>
+<main>
+<!-- SHOW -->
+<section id="tab-show" class="tab active">
+  <div class="grid g2">
+    <div class="card">
+      <h3>Songs</h3>
+      <input id="songFilter" type="text" placeholder="Filter…" style="width:100%;margin-bottom:8px">
+      <div id="songList" class="list"></div>
+      <div class="row" style="margin-top:10px"><input id="songPath" type="text" placeholder="/path/to/song.mp3 or video" style="flex:1"><button id="loadPath" class="btn">Load</button></div>
+      <div id="dropzone" class="drop">Drop music or video files here<br><small class="dim">mp3 · wav · flac · m4a · aiff · ogg · opus · mp4 · mov · mkv · webm</small></div>
+    </div>
+    <div class="grid" style="gap:16px">
+      <div class="card">
+        <div class="row" style="justify-content:space-between">
+          <div><h2 id="songTitle">Pick a song</h2><div id="songMeta" class="muted mono"></div></div>
+          <div class="transportbar">
+            <button id="playBtn" class="btn primary" disabled title="Music + lights in sync">▶ Play</button>
+            <button id="simBtn" class="btn" disabled title="Run the show without audio, fast">⚡ Simulate</button>
+            <select id="simRate" title="simulation speed"><option value="1">1×</option><option value="2">2×</option><option value="4" selected>4×</option><option value="8">8×</option><option value="16">16×</option></select>
+            <button id="lightsOnlyBtn" class="btn" disabled title="Lights in real time without audio (your DJ software plays the track)">Lights only</button>
+            <span id="startAt" class="badge">from bar 1</span>
+          </div>
+        </div>
+        <div style="margin:12px 0 6px" class="row">
+          <span class="muted">Palette</span><select id="palette"></select><span id="palSw" class="swatches"></span>
+          <span class="muted" style="margin-left:8px">Style</span>
+          <span class="seg" id="style"><button data-v="chill">Chill</button><button data-v="club" class="active">Club</button><button data-v="hype">Hype</button></span>
+          <label class="toggle"><input type="checkbox" id="optStrobe"> Strobe</label>
+          <label class="toggle"><input type="checkbox" id="optFog"> Fog</label>
+          <button id="makeShowBtn" class="btn" disabled>Rebuild show</button>
+        </div>
+        <canvas id="timeline"></canvas>
+        <div class="row" style="justify-content:space-between;margin-top:8px">
+          <div class="legend" id="secLegend"></div>
+          <div class="row"><span class="dim">Grid:</span>
+            <button class="btn small" data-fix='{"shift":0.5}' title="Hits land on the off-beat">½ beat</button>
+            <button class="btn small" data-fix='{"bar":-1}' title="Cues change a beat late">bar −1</button>
+            <button class="btn small" data-fix='{"bar":1}' title="Cues change a beat early">bar +1</button>
+            <button class="btn small" data-fix="x2" title="Tempo detected at half speed">BPM ×2</button>
+            <button class="btn small" data-fix="half" title="Tempo detected at double speed">BPM ÷2</button>
+            <button class="btn small" data-fix='{"clear":true}'>reset</button></div>
+        </div>
+        <div class="dim" style="font-size:12px;margin-top:4px">Click the cue strip to change a look (saved per song + rig) · click above it to start/seek there.</div>
+        <div id="showWarn"></div>
+      </div>
+    </div>
+  </div>
+  <div class="stagewrap" style="margin-top:16px">
+    <div class="card rel" style="padding:8px"><canvas id="stageMain"></canvas>
+      <div class="toolbar"><span class="glass">STAGE · live</span><span class="grow"></span>
+        <span class="glass">haze <input type="range" class="hazeSl" min="0" max="100" value="65" style="width:90px;vertical-align:middle"></span>
+        <button class="btn small" data-view="foh">Front</button><button class="btn small" data-view="wide">Wide</button><button class="btn small" data-view="top">Top</button><button class="btn small" data-view="dj">DJ</button></div>
+      <div class="hint">drag empty space to orbit · scroll to zoom · click a light to select · drag a selected light to move it (shift = height)</div></div>
+    <div class="grid" style="gap:16px">
+      <div class="dock" data-dock="show"></div>
+      <div class="card"><h3>Lights now</h3><div id="lightsNow" class="lights"></div>
+        <details class="preview" style="margin-top:12px"><summary class="muted">Show preview (every light over the whole song)</summary><div id="previewBox" class="dim" style="margin-top:8px">Make a show to see it.</div></details></div>
+    </div>
+  </div>
+</section>
+<!-- STAGE -->
+<section id="tab-stage" class="tab">
+  <div class="stagewrap">
+    <div class="card rel" style="padding:8px">
+      <canvas id="stageBig"></canvas>
+      <div class="toolbar"><button class="btn small" data-view="foh">Front</button><button class="btn small" data-view="wide">Wide</button><button class="btn small" data-view="top">Top</button>
+        <button class="btn small" data-view="side">Side</button><button class="btn small" data-view="dj">DJ</button>
+        <label class="toggle glass"><input type="checkbox" id="labels" checked> labels</label>
+        <label class="toggle glass" title="when nothing is playing, show dim beams so you can see where each light points"><input type="checkbox" id="restBeams" checked> rest beams</label>
+        <span class="glass">haze <input type="range" class="hazeSl" min="0" max="100" value="65" style="width:90px;vertical-align:middle"></span>
+        <span class="grow"></span><button class="btn small" id="undoBtn" title="Undo the last rig change">↶ Undo</button>
+        <button class="btn small" id="testSelBtn" title="Flash the selected light (or all)">Flash</button></div>
+      <div class="hint">click a light to select · drag it to move (shift-drag = height) · drag empty space to orbit · scroll to zoom · beams = live DMX with motor travel</div>
+    </div>
+    <div class="dock" data-dock="stage"></div>
+  </div>
+</section>
+<!-- RIG -->
+<section id="tab-rig" class="tab">
+  <div class="grid g2">
+    <div class="grid" style="gap:16px">
+      <div class="card"><h3>Rig</h3>
+        <div id="rigSummary" class="muted"></div>
+        <details style="margin-top:10px"><summary class="muted">New rig</summary>
+          <div class="grid" style="gap:8px;margin-top:8px">
+            <input id="newRigName" type="text" placeholder="name e.g. wedding_kit">
+            <select id="newRigVenue"></select>
+            <label class="toggle"><input type="checkbox" id="newRigTruss"> truss / goalpost over the booth</label>
+            <button id="newRigBtn" class="btn primary">Create</button>
+          </div></details>
+      </div>
+      <div class="card"><h3>Add lights</h3>
+        <div class="row"><input id="profQ" type="text" placeholder="e.g. rgbw par 8ch, moving head" style="flex:1"><label class="toggle"><input type="checkbox" id="profOfl"> all brands</label></div>
+        <div id="profList" class="list" style="max-height:230px;margin-top:8px"></div>
+        <div class="grid" style="gap:8px;margin-top:8px">
+          <div class="row"><span class="muted">How many</span><input id="addCount" type="number" value="2" min="1" max="64" style="width:70px"><span class="muted">Mode</span><select id="addMode"></select></div>
+          <input id="addWhere" type="text" placeholder="where: floor behind the dj · on stands either side · truss · over the crowd · 8ft">
+          <button id="addBtn" class="btn primary" disabled>Add to rig</button>
+        </div>
+        <details style="margin-top:10px"><summary class="muted">Light not listed? Type its channels from the manual</summary>
+          <div class="grid" style="gap:8px;margin-top:8px">
+            <input id="npName" type="text" placeholder="profile name e.g. my_par_7ch">
+            <input id="npCh" type="text" placeholder="dimmer,red,green,blue,strobe,mode,speed  ·  or  dimmer,4x(r,g,b)">
+            <select id="npType"><option>par</option><option>bar</option><option>moving_head</option><option>spider</option><option>strobe</option><option>haze</option><option>effect</option></select>
+            <button id="npBtn" class="btn">Create profile</button></div></details>
+      </div>
+    </div>
+    <div class="grid" style="gap:16px">
+      <div class="card rel"><h3>Plan (top view — drag lights to move them)</h3><canvas id="plan"></canvas>
+        <div class="hint">crowd at the bottom · booth at the top · 1 m grid</div></div>
+      <div class="card"><h3>Lights &amp; addresses</h3>
+        <div style="overflow:auto"><table id="rigTable"><thead><tr><th>Light</th><th>Profile</th><th>Kind</th><th>Mode</th><th>Address</th><th>DIP on</th><th>Where</th><th>Pan</th><th></th></tr></thead><tbody></tbody></table></div>
+        <div class="row" style="margin-top:10px"><button id="testAll" class="btn">Flash each light</button><span class="dim">Dial each light's address on its display (d001/A001) or DIP switches.</span></div>
+        <div id="rigWarn" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- LIVE -->
+<section id="tab-live" class="tab">
+  <div class="grid g2b">
+    <div class="card"><h3>Follow your DJ software</h3>
+      <div class="grid" style="gap:10px">
+        <div class="row"><span class="muted">Beat clock</span>
+          <select id="liveClock"><option value="link">Ableton Link (rekordbox Performance, djay, Traktor, Serato…)</option><option value="prodjlink">Pioneer Pro DJ Link (CDJ/XDJ on the network)</option><option value="internal">Internal (tap tempo)</option></select></div>
+        <div class="row"><span class="muted">React to audio of</span><input id="liveAudio" type="text" placeholder="rekordbox · djay · Music · Spotify (optional)"></div>
+        <div class="row"><button id="liveBtn" class="btn primary">Go live</button><button id="manualBtn" class="btn">Manual (tap tempo)</button><input id="manualBpm" type="number" value="124" min="60" max="200"><span class="dim">BPM</span></div>
+        <p class="dim" style="margin:0">Turn LINK on in your DJ app. The show changes looks on the DJ's bar lines; pads below override it while held (release to return).</p>
+      </div></div>
+    <div class="card"><h3>Timing</h3>
+      <div class="row"><button id="tapBtn" class="btn">Tap</button>
+        <span class="muted" style="margin-left:10px">Nudge lights</span><button class="btn small" data-nudge="-0.25">−¼ beat</button><button class="btn small" data-nudge="0.25">+¼ beat</button>
+        <button id="releaseBtn" class="btn">Release pad</button></div>
+      <p class="dim">Song playing and lights late because of Bluetooth speakers? Set latency in Setup.</p></div>
+  </div>
+  <div class="card" style="margin-top:16px"><h3>Pads (looks)</h3><div id="pads" class="pads"><span class="dim">Start Play, Go live or Manual to get pads.</span></div></div>
+</section>
+<!-- EXPORT -->
+<section id="tab-export" class="tab">
+  <div class="grid g2b">
+    <div class="card"><h3>Export a show</h3>
+      <div class="muted" id="expSong">Pick a song on the Show tab first.</div>
+      <div class="grid" style="gap:8px;margin:12px 0">
+        <label class="toggle"><input type="checkbox" class="fmt" value="qlc" checked> <b>QLC+</b>&nbsp;workspace + fixture files + audio (free lighting desk software)</label>
+        <label class="toggle"><input type="checkbox" class="fmt" value="dmx" checked> <b>DMX recording</b>&nbsp;CSV, every channel per frame</label>
+        <label class="toggle"><input type="checkbox" class="fmt" value="cues" checked> <b>Cue list</b>&nbsp;CSV with times, bars, sections</label>
+        <label class="toggle"><input type="checkbox" class="fmt" value="midi" checked> <b>MIDI</b>&nbsp;cue markers + notes (Ableton, DAWs, MIDI-triggered lighting)</label>
+        <label class="toggle"><input type="checkbox" class="fmt" value="patch" checked> <b>Patch list</b>&nbsp;CSV: lights, addresses, DIP switches, positions</label>
+        <label class="toggle"><input type="checkbox" class="fmt" value="native" checked> <b>Native</b>&nbsp;show + analysis JSON</label>
+      </div>
+      <button id="exportBtn" class="btn primary" disabled>Export</button></div>
+    <div class="card"><h3>Files</h3><div id="expResult" class="dim">Nothing exported yet.</div></div>
+  </div>
+</section>
+<!-- SETUP -->
+<section id="tab-setup" class="tab">
+  <div class="grid g2b">
+    <div class="card"><h3>System</h3><div id="doctor" class="kv"></div><div id="tips" style="margin-top:10px"></div></div>
+    <div class="card"><h3>Settings</h3>
+      <div class="kv">
+        <span class="muted">Output</span><select id="sPort"><option value="auto">auto (USB-DMX if plugged in, else simulation)</option><option value="none">simulation only</option></select>
+        <span class="muted">Art-Net host</span><input id="sArtnet" type="text" placeholder="e.g. 192.168.1.50 (Wi-Fi DMX node)">
+        <span class="muted">Speaker latency ms</span><input id="sLatency" type="number" min="0" max="1000">
+        <span class="muted">Master level</span><input id="sMaster" type="number" min="0" max="1" step="0.05">
+        <span class="muted">Music folder</span><input id="sLibrary" type="text" placeholder="/Users/you/Music/Gig">
+        <span class="muted">rekordbox XML</span><input id="sRbx" type="text" placeholder="collection.xml export (uses your beat grids)">
+        <span class="muted">Slow movers</span><select id="sLead"><option value="0.5">normal (move ½ beat before hits)</option><option value="1">slow heads (1 beat)</option><option value="1.5">very slow (1½ beats)</option></select>
+      </div>
+      <button id="saveSettings" class="btn primary" style="margin-top:12px">Save</button></div>
+    <div class="card" style="grid-column:1/-1"><h3>Use it from a chat (Claude, Codex, Cursor…)</h3>
+      <p class="muted">The MCP server gives any assistant the same controls as this page. Add it once:</p>
+      <pre id="mcpSnip"></pre></div>
+  </div>
+</section>
+</main>
+<div id="insp" class="card insp"></div>
+<div id="cuePop"></div>
+<div id="toast"></div>
+<script>
+"use strict";
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const S = {status:null, rig:null, rigName:null, song:null, analysis:null, plan:null, palettes:{}, stage:null, startBar:1, tab:'show',
+           selProfile:null, stageFetch:0, lastStageKey:''};
+const SEC = {intro:'#64748b', groove:'#3b82f6', peak:'#f59e0b', build:'#a855f7', drop:'#ef4444', breakdown:'#06b6d4', outro:'#475569'};
+const CUEC = c => c.startsWith('build') ? '#a855f7' : c==='predrop' ? '#e879f9' : c==='drop' ? '#ef4444' : c==='peak' ? '#f59e0b' : c==='drive' ? '#f97316'
+           : c==='break' ? '#06b6d4' : c.startsWith('groove') ? '#3b82f6' : c==='dip'||c==='gap' ? '#334155' : '#64748b';
+
+async function api(path, body, raw){
+  const opt = body===undefined ? {} : {method:'POST', headers:{'Content-Type':'application/json'}, body: raw ? body : JSON.stringify(body)};
+  if (raw) opt.headers = {'Content-Type':'application/octet-stream'};
+  const r = await fetch(path, opt); const j = await r.json();
+  if (!j.ok) throw new Error(j.error || r.statusText); return j.data;
+}
+function toast(msg, err){ const d=document.createElement('div'); if(err) d.className='e'; d.textContent=msg; $('#toast').appendChild(d); setTimeout(()=>d.remove(), err?7000:3500); }
+const run = fn => async (...a) => { try { return await fn(...a); } catch(e){ toast(e.message, true); } };
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const opts = () => ({palette:$('#palette').value, style:$('#style .active').dataset.v, strobe:$('#optStrobe').checked, fog:$('#optFog').checked, rig:S.rigName});
+
+// ---------- tabs ----------
+$$('#tabs button').forEach(b => b.onclick = () => { $$('#tabs button').forEach(x=>x.classList.toggle('active', x===b));
+  $$('.tab').forEach(t => t.classList.toggle('active', t.id==='tab-'+b.dataset.tab)); S.tab=b.dataset.tab;
+  if (S.tab==='rig') loadRig(); if (S.tab==='setup') loadSetup(); dockInspector(); resizeAll(); });
+
+// ---------- header ----------
+$('#master').oninput = run(async e => { $('#masterV').textContent = e.target.value+'%'; if (S.status?.mode!=='idle' && S.status?.beat!==undefined) await api('/api/master', {value: e.target.value/100}); });
+$('#blackoutBtn').onclick = run(async () => { const on = !$('#blackoutBtn').classList.contains('on'); await api('/api/blackout', {on}); });
+$('#stopBtn').onclick = run(async () => { await api('/api/stop', {}); toast('Stopped — lights blacked out'); });
+$('#rigSel').onchange = run(async e => { S.rigName = e.target.value; S.sel = null; await api('/api/settings', {rig: S.rigName}); await refreshIdle(); loadRig(); toast('Rig: '+S.rigName); });
+
+async function loadRigs(){
+  const d = await api('/api/rigs'); S.rigName = S.rigName || d.default || d.rigs[0];
+  $('#rigSel').innerHTML = d.rigs.map(r => `<option ${r===S.rigName?'selected':''}>${esc(r)}</option>`).join('') || '<option>(no rigs)</option>';
+  $('#newRigVenue').innerHTML = Object.entries(d.venues).map(([k,v]) => `<option value="${k}">${k} — ${esc(v)}</option>`).join('');
+}
+
+// ---------- status polling ----------
+function connectStream(){
+  const es = new EventSource('/api/stream');
+  es.onmessage = ev => { const m = JSON.parse(ev.data); if (m.stage) S.stage = m.stage; if (m.status) applyStatus(m.status); };
+  es.onerror = () => { $('#modePill').textContent = 'OFFLINE'; es.close(); setTimeout(connectStream, 1500); };
+}
+let lastMode = 'idle';
+function applyStatus(st){
+  {
+    S.status = st;
+    if (st.mode === 'idle' && lastMode !== 'idle') { S.stage = null; refreshIdle(); } lastMode = st.mode;
+    const tv = st.travel && S.sel && st.travel[S.sel], tb = $('#iTravel'); if (tb) tb.style.width = Math.min(100, (tv||0)/1.8) + '%';
+    if (st.rate && $('#simRate') && document.activeElement !== $('#simRate') && !st.audio) $('#simRate').value = String(st.rate);
+    const m = st.mode; const p = $('#modePill'); p.textContent = m.toUpperCase(); p.className = 'pill ' + m;
+    $('#outBadge').textContent = 'output: ' + (st.output || '–');
+    $('#tBar').textContent = st.bar !== undefined ? (st.bar + (st.song ? '/'+st.song.nbars : '')) : '–';
+    $('#tBpm').textContent = st.bpm ?? '–'; $('#tCue').textContent = st.cue ?? '–';
+    $('#tNext').textContent = st.next ? `next: ${st.next[1]} @ bar ${st.next[0]}` : '';
+    $('#blackoutBtn').classList.toggle('on', !!st.blackout);
+    if (st.error) $('#outBadge').title = st.error;
+    renderLightsNow(st); renderPads(st);
+    if (S.analysis) drawTimeline();
+  }
+}
+
+// ---------- songs ----------
+async function loadSongs(){
+  const list = await api('/api/songs'); S.songs = list; renderSongs();
+}
+function renderSongs(){
+  const q = $('#songFilter').value.toLowerCase();
+  $('#songList').innerHTML = (S.songs||[]).filter(s => !q || s.title.toLowerCase().includes(q)).map(s =>
+    `<div class="item ${S.song===s.file?'sel':''}" data-f="${esc(s.file)}"><span>${esc(s.title)}</span><small>${s.bpm? s.bpm+' BPM':'new'}</small></div>`).join('')
+    || '<div class="item dim">No songs yet — drop files below, load a path, or set a music folder in Setup.</div>';
+  $$('#songList .item[data-f]').forEach(el => el.onclick = () => pickSong(el.dataset.f));
+}
+$('#songFilter').oninput = renderSongs;
+$('#loadPath').onclick = () => $('#songPath').value.trim() && pickSong($('#songPath').value.trim());
+const dz = $('#dropzone');
+['dragenter','dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('over'); }));
+['dragleave','drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('over'); }));
+dz.addEventListener('drop', run(async e => {
+  for (const f of e.dataTransfer.files) {
+    toast('Uploading '+f.name+'…');
+    const d = await api('/api/upload?name='+encodeURIComponent(f.name), await f.arrayBuffer(), true);
+    await loadSongs(); await pickSong(d.file);
+  }
+}));
+const pickSong = run(async file => {
+  S.song = file; S.plan = null; S.startBar = 1; $('#startAt').textContent = 'from bar 1'; renderSongs();
+  $('#songTitle').textContent = 'Analysing…'; $('#songMeta').textContent = '';
+  S.analysis = await api('/api/analyze', {file}); showAnalysis(); loadSongs();
+  ['#playBtn','#simBtn','#lightsOnlyBtn','#makeShowBtn','#exportBtn'].forEach(s => $(s).disabled = false);
+  makeShow();
+});
+function showAnalysis(){
+  const a = S.analysis; $('#songTitle').textContent = a.title;
+  $('#songMeta').textContent = `${a.bpm} BPM · ${a.nbars} bars · ${fmtT(a.duration_s)} · drops at bar ${a.drops.join(', ') || '–'} · grid: ${a.grid_source}`;
+  $('#expSong').textContent = a.title + ' — ' + a.bpm + ' BPM';
+  $('#secLegend').innerHTML = Object.entries(SEC).map(([k,c]) => `<span><i style="background:${c}"></i>${k}</span>`).join('');
+  drawTimeline();
+}
+const fmtT = s => Math.floor(s/60)+':'+String(Math.round(s%60)).padStart(2,'0');
+const makeShow = run(async () => {
+  if (!S.song) return; $('#makeShowBtn').textContent = 'Making…';
+  try {
+    showResult(await api('/api/show', {file:S.song, ...opts()}));
+  } finally { $('#makeShowBtn').textContent = 'Rebuild show'; }
+});
+function showResult(d){
+  S.plan = d.plan; S.analysis = d.analysis; S.cueNames = d.cue_names; S.editedBars = new Set(d.edited_bars); showAnalysis();
+  const mo = Object.entries(d.motion || {}).map(([n, m]) => `<span class="badge" title="${m.moves} moves, max ${m.max_lag_deg}° behind">${esc(n)}: moves ${d.mover_leads[n]??''} beats early · lit while moving ${m.lit_moving_pct}%</span>`).join(' ');
+  $('#showWarn').innerHTML = (mo ? `<div class="row" style="margin-top:8px"><span class="dim">Moving heads:</span>${mo}</div>` : '') + d.warnings.map(w => `<div class="warn">⚠ ${esc(w)}</div>`).join('');
+  $('#previewBox').innerHTML = `<img src="${d.preview}&t=${Date.now()}" alt="show preview">`;
+}
+$('#makeShowBtn').onclick = makeShow; $('#palette').onchange = () => { paintPal(); makeShow(); };
+['#optStrobe','#optFog'].forEach(s => $(s).onchange = makeShow);
+$$('#style button').forEach(b => b.onclick = () => { $$('#style button').forEach(x=>x.classList.toggle('active', x===b)); makeShow(); });
+const play = audio => run(async () => { await api('/api/play', {file:S.song, audio, start_bar:S.startBar, ...opts()}); toast(audio ? 'Playing with audio' : 'Lights running (no audio)'); });
+$('#playBtn').onclick = play(true); $('#lightsOnlyBtn').onclick = play(false);
+$('#simBtn').onclick = run(async () => { await api('/api/simulate', {file:S.song, rate:+$('#simRate').value, start_bar:S.startBar, ...opts()}); toast(`Simulating at ${$('#simRate').value}× — click the timeline to jump`); });
+$('#simRate').onchange = run(async () => { if (S.status?.mode === 'play' && !S.status.audio) await api('/api/rate', {rate:+$('#simRate').value}); });
+$$('[data-fix]').forEach(b => b.onclick = run(async () => {
+  if (!S.song) return; let body = b.dataset.fix;
+  if (body==='x2' || body==='half') body = {bpm: Math.round(S.analysis.bpm * (body==='x2'?2:0.5)*100)/100}; else body = JSON.parse(body);
+  const d = await api('/api/fix', {file:S.song, ...body}); S.analysis = d.analysis; showAnalysis(); toast('Grid updated'); makeShow();
+}));
+async function loadPalettes(){
+  S.palettes = await api('/api/palettes');
+  $('#palette').innerHTML = '<option value="auto">auto (per song)</option>' + Object.keys(S.palettes).map(k => `<option>${k}</option>`).join(''); paintPal();
+}
+function paintPal(){ const p = S.palettes[$('#palette').value]; $('#palSw').innerHTML = p ? p.map(c => `<i style="background:${c}"></i>`).join('') : ''; }
+
+// ---------- timeline ----------
+function fitCanvas(c){ const r = c.getBoundingClientRect(), d = devicePixelRatio||1; if (c.width!==Math.round(r.width*d) || c.height!==Math.round(r.height*d)) { c.width=Math.round(r.width*d); c.height=Math.round(r.height*d); } return [c.getContext('2d'), c.width, c.height, d]; }
+function drawTimeline(){
+  const a = S.analysis; const [g, W, H, d] = fitCanvas($('#timeline'));
+  if (!a) { g.clearRect(0,0,W,H); g.fillStyle = '#5d6578'; g.font = `${13*d}px ui-sans-serif`; g.textAlign = 'center';
+    g.fillText('Pick a song on the left (or drop a file) — its beats, drops and sections appear here', W/2, H/2); g.textAlign = 'left'; return; }
+  const n = a.nbars, pad = 8*d, w = W-2*pad, x = b => pad + (b-1)/n*w, bw = w/n;
+  g.clearRect(0,0,W,H); g.font = `${11*d}px ui-sans-serif`; g.textBaseline = 'middle';
+  const yS = 6*d, hS = 18*d, yE = 30*d, hE = H - 30*d - 46*d, yC = H - 40*d, hC = 22*d;
+  for (const s of a.sections) { g.fillStyle = SEC[s.type]||'#555'; g.globalAlpha = .9; g.fillRect(x(s.start_bar), yS, (s.end_bar-s.start_bar+1)*bw-1, hS);
+    g.globalAlpha = 1; g.fillStyle = '#fff'; if ((s.end_bar-s.start_bar+1)*bw > 40*d) g.fillText(s.type, x(s.start_bar)+4*d, yS+hS/2); }
+  for (const b of a.bars) { const h = Math.max(2*d, b.energy*hE); g.fillStyle = SEC[b.section]||'#3b82f6'; g.globalAlpha = .35 + .5*b.energy;
+    g.fillRect(x(b.bar)+.5, yE+hE-h, Math.max(1, bw-1.5), h); }
+  g.globalAlpha = 1;
+  for (const dr of a.drops) { g.strokeStyle = '#ef4444'; g.lineWidth = 2*d; g.beginPath(); g.moveTo(x(dr), yS); g.lineTo(x(dr), yC+hC); g.stroke();
+    g.fillStyle = '#ef4444'; g.fillText('DROP', x(dr)+4*d, yE+8*d); }
+  if (S.plan) { for (let i=0;i<S.plan.length;i++) { const [b,c] = S.plan[i], e = i+1<S.plan.length ? S.plan[i+1][0] : n+1;
+      g.fillStyle = CUEC(c); g.globalAlpha = .85; g.fillRect(x(b), yC, (e-b)*bw-1, hC); g.globalAlpha = 1;
+      if ((e-b)*bw > 34*d) { g.fillStyle = '#fff'; g.fillText(c, x(b)+3*d, yC+hC/2); } } }
+  else { g.fillStyle = '#5d6578'; g.fillText('cues appear here after the show is built', pad, yC+hC/2); }
+  if (S.editedBars && S.editedBars.size) { g.fillStyle = '#fcd34d'; for (const b of S.editedBars) g.fillRect(x(b), yC+hC+2*d, Math.max(2, bw-1), 3*d); }
+  g.fillStyle = '#5d6578'; for (let b=1;b<=n;b+=16) g.fillText(String(b), x(b)+2*d, H-8*d);
+  // start marker + playhead
+  g.fillStyle = '#22d3ee'; g.beginPath(); g.moveTo(x(S.startBar), yS+hS); g.lineTo(x(S.startBar)-5*d, yS+hS+8*d); g.lineTo(x(S.startBar)+5*d, yS+hS+8*d); g.fill();
+  const st = S.status; if (st && st.mode==='play' && st.song && st.song.file===a.file && st.beat!==undefined) {
+    const px = x(st.beat/4+1); g.strokeStyle = '#fff'; g.lineWidth = 2*d; g.shadowColor = '#fff'; g.shadowBlur = 8*d;
+    g.beginPath(); g.moveTo(px, 0); g.lineTo(px, H); g.stroke(); g.shadowBlur = 0; }
+}
+$('#timeline').onclick = run(async e => { if (!S.analysis) return; const r = e.target.getBoundingClientRect(), pad = 8, w = r.width-2*pad, n = S.analysis.nbars;
+  const bar = Math.max(1, Math.min(n, Math.floor((e.clientX-r.left-pad)/w*n)+1)), yIn = e.clientY - r.top;
+  if (S.plan && yIn > r.height - 42 && yIn < r.height - 14) return cuePopover(e, bar);              // the cue strip
+  const st = S.status;
+  if (st && st.mode === 'play' && st.song && st.song.file === S.analysis.file) { await api('/api/seek', {bar}); toast('Jumped to bar '+bar); return; }
+  S.startBar = bar; $('#startAt').textContent = 'from bar '+S.startBar; drawTimeline(); });
+function cuePopover(e, bar){
+  let i = S.plan.length - 1; while (i > 0 && S.plan[i][0] > bar) i--;
+  const start = S.plan[i][0], end = (i+1 < S.plan.length ? S.plan[i+1][0] : S.analysis.nbars + 1) - 1, cur = S.plan[i][1], pop = $('#cuePop');
+  pop.innerHTML = `<div class="row" style="justify-content:space-between;margin-bottom:8px"><b>Bars ${start}–${end}</b><span class="dim">now: ${cur}</span></div>
+    <div class="pads">${(S.cueNames||[]).map(c => `<button class="pad ${c===cur?'active':''}" data-c="${c}" style="border-bottom:3px solid ${CUEC(c)}">${c.replace('_',' ')}</button>`).join('')}</div>
+    <div class="row" style="margin-top:8px"><button class="btn small" data-c="">Automatic (remove edit)</button><span class="grow"></span><button class="btn small" id="cpClose">Close</button></div>`;
+  pop.style.display = 'block'; pop.style.left = Math.min(innerWidth - 380, e.clientX - 20) + 'px'; pop.style.top = Math.min(innerHeight - 260, e.clientY + 14) + 'px';
+  $('#cpClose').onclick = () => pop.style.display = 'none';
+  pop.querySelectorAll('[data-c]').forEach(b => b.onclick = run(async () => { pop.style.display = 'none';
+    showResult(await api('/api/show/edit', {file:S.song, start_bar:start, end_bar:end, cue:b.dataset.c || null, ...opts()}));
+    toast(b.dataset.c ? `Bars ${start}–${end} → ${b.dataset.c} (saved)` : `Bars ${start}–${end} back to automatic`); }));
+}
+document.addEventListener('mousedown', e => { if (!e.target.closest('#cuePop') && e.target.id !== 'timeline') $('#cuePop').style.display = 'none'; });
+
+// ---------- lights now + pads ----------
+function renderLightsNow(st){
+  const fx = st.fixtures; const box = $('#lightsNow');
+  if (!fx) { if (!box.dataset.idle) { box.innerHTML = '<span class="dim">Lights show here while something runs.</span>'; box.dataset.idle = 1; } return; }
+  delete box.dataset.idle;
+  if (box.children.length !== fx.length || box.dataset.rig !== st.rig) { box.dataset.rig = st.rig;
+    box.innerHTML = fx.map(f => `<div class="light"><div class="n"><span>${esc(f.name)}</span><span class="kind ${f.kind}">${f.kind}</span></div><div class="heads">${f.rgb.map(()=>'<i></i>').join('')}</div></div>`).join(''); }
+  fx.forEach((f,i) => { const heads = box.children[i].querySelectorAll('.heads i'); f.rgb.forEach((c,h) => { if (heads[h]) heads[h].style.background = `rgb(${c[0]},${c[1]},${c[2]})`;
+    if (heads[h]) heads[h].style.boxShadow = Math.max(...c) > 30 ? `0 0 12px rgb(${c[0]},${c[1]},${c[2]})` : 'none'; }); });
+}
+function renderPads(st){
+  const box = $('#pads'), cues = st.cues || [];
+  if (!cues.length) { if (!box.dataset.empty) { box.innerHTML = '<span class="dim">Start Play, Go live or Manual to get pads.</span>'; box.dataset.empty = 1; } return; }
+  const key = cues.join(','); if (box.dataset.key !== key) { delete box.dataset.empty; box.dataset.key = key;
+    const order = ['intro','groove_a','groove_b','dip','gap','build1','build2','build3','predrop','drop','drive','peak','break','outro'];
+    box.innerHTML = [...cues].sort((a,b)=>order.indexOf(a)-order.indexOf(b)).map(c => `<button class="pad" data-cue="${c}" style="border-bottom:3px solid ${CUEC(c)}">${c.replace('_',' ')}</button>`).join('');
+    $$('#pads .pad').forEach(p => p.onclick = run(async () => { await api('/api/trigger', {cue:p.dataset.cue}); })); }
+  $$('#pads .pad').forEach(p => p.classList.toggle('active', p.dataset.cue === st.cue || (st.holds||[]).includes('trigger') && p.dataset.cue===S.lastPad));
+}
+$('#pads').addEventListener('click', e => { const p = e.target.closest('.pad'); if (p) S.lastPad = p.dataset.cue; });
+$('#liveBtn').onclick = run(async () => { await api('/api/live', {clock:$('#liveClock').value, audio_app:$('#liveAudio').value, palette:$('#palette').value, rig:S.rigName}); toast('Live — following '+$('#liveClock').value); });
+$('#manualBtn').onclick = run(async () => { await api('/api/manual', {bpm:+$('#manualBpm').value, palette:$('#palette').value==='auto'?'neon':$('#palette').value, rig:S.rigName}); toast('Manual mode'); });
+$('#tapBtn').onclick = run(() => api('/api/tap', {})); $('#releaseBtn').onclick = run(() => api('/api/release', {}));
+$$('[data-nudge]').forEach(b => b.onclick = run(() => api('/api/nudge', {beats:+b.dataset.nudge})));
+
+// ---------- 3D ----------
+const cams = {main:{yaw:0.32, pitch:0.2, dist:12, tgt:[0,-1.2,1.4]}, big:{yaw:0.3, pitch:0.2, dist:12, tgt:[0,-1.2,1.4]}};
+const VIEWS = {foh:[0,0.12,11], wide:[0.75,0.32,14], top:[0,1.45,15], side:[1.5,0.15,12], dj:[Math.PI,0.2,7]};
+$$('[data-view]').forEach(b => b.onclick = () => { const cam = b.closest('#tab-stage') ? cams.big : cams.main; const [y,p,dd] = VIEWS[b.dataset.view]; Object.assign(cam, {yaw:y, pitch:p, dist:dd}); });
+let HAZE = 0.65; $$('.hazeSl').forEach(sl => sl.oninput = () => { HAZE = sl.value/100; $$('.hazeSl').forEach(o => o.value = sl.value); });
+const V = {sub:(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]], add:(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]], mul:(a,k)=>[a[0]*k,a[1]*k,a[2]*k],
+  dot:(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2], cross:(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]], norm:a=>{const l=Math.hypot(...a)||1;return [a[0]/l,a[1]/l,a[2]/l];}};
+function camera(cam, W, H){
+  const e = V.add(cam.tgt, [-Math.sin(cam.yaw)*Math.cos(cam.pitch)*cam.dist, -Math.cos(cam.yaw)*Math.cos(cam.pitch)*cam.dist, Math.sin(cam.pitch)*cam.dist]);
+  const f = V.norm(V.sub(cam.tgt, e)); let r = V.cross(f, [0,0,1]); if (Math.hypot(...r) < 1e-6) r = [1,0,0]; r = V.norm(r); const u = V.cross(r, f);
+  const F = H / (2*Math.tan(0.45));
+  const P = p => { const d = V.sub(p, e), z = V.dot(d, f); if (z < 0.1) return null; return [W/2 + V.dot(d, r)/z*F, H/2 - V.dot(d, u)/z*F, z]; };
+  P.ray = (sx, sy) => [e, V.norm(V.add(V.add(f, V.mul(r, (sx-W/2)/F)), V.mul(u, -(sy-H/2)/F)))]; P.F = F; P.up = u; P.r = r; P.f = f; P.e = e; return P;
+}
+function boxCorners(c, ax, ay, az, h){ const out = []; for (const sx of [-1,1]) for (const sy of [-1,1]) for (const sz of [-1,1])
+  out.push(V.add(V.add(V.add(c, V.mul(ax, sx*h[0])), V.mul(ay, sy*h[1])), V.mul(az, sz*h[2]))); return out; }
+const FACES = [[0,1,3,2],[4,5,7,6],[0,1,5,4],[2,3,7,6],[0,2,6,4],[1,3,7,5]];
+function hull(pts){                                                                  // convex hull (monotone chain), screen points
+  const p = pts.slice().sort((a,b) => a[0]-b[0] || a[1]-b[1]); if (p.length < 3) return p;
+  const cr = (o,a,b) => (a[0]-o[0])*(b[1]-o[1]) - (a[1]-o[1])*(b[0]-o[0]), lo = [], up = [];
+  for (const q of p) { while (lo.length >= 2 && cr(lo[lo.length-2], lo[lo.length-1], q) <= 0) lo.pop(); lo.push(q); }
+  for (const q of p.reverse()) { while (up.length >= 2 && cr(up[up.length-2], up[up.length-1], q) <= 0) up.pop(); up.push(q); }
+  return lo.slice(0,-1).concat(up.slice(0,-1));
+}
+const owner = name => name.split('.')[0];
+function sceneData(){
+  const st = S.status && S.status.mode !== 'idle' && S.stage ? S.stage : S.idleStage; if (!st) return null;
+  if (!S.drag) return st;
+  const dlt = V.sub(S.drag.pos, S.drag.orig), mv = x => owner(x.name) === S.drag.name;           // instant preview while dragging
+  return {...st, parts: st.parts.map(p => mv(p) ? {...p, c: V.add(p.c, dlt)} : p), beams: st.beams.map(b => mv(b) ? {...b, pos: V.add(b.pos, dlt)} : b)};
+}
+function draw3D(canvas, cam){
+  const st = sceneData(); const [g, W, H, d] = fitCanvas(canvas); if (!W) return;
+  const bg = g.createRadialGradient(W/2, H*0.45, 0, W/2, H*0.45, Math.max(W,H)*0.75); bg.addColorStop(0,'#121828'); bg.addColorStop(1,'#05070b');
+  g.fillStyle = bg; g.fillRect(0,0,W,H);
+  if (!st) { g.fillStyle = '#8a93a6'; g.font = `${14*d}px ui-sans-serif`; g.fillText('No rig yet — create one on the Rig tab.', 24*d, 40*d); return; }
+  const P = camera(cam, W, H); canvas._P = P; const v = st.venue || {}, room = v.room || [12,12,5], deck = v.deck || [2,1,0];
+  const y0 = -room[1], y1 = deck[1] + 3, hw = room[0]/2, rh = room[2];
+  const poly = (pts, fill, stroke) => { const q = pts.map(P); if (q.some(x=>!x)) return; g.beginPath(); q.forEach((p,i)=> i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1])); g.closePath();
+    if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = d; g.stroke(); } };
+  const line = (a, b, col, lw) => { const p = P(a), q = P(b); if (!p || !q) return; g.strokeStyle = col; g.lineWidth = (lw||1)*d; g.beginPath(); g.moveTo(p[0],p[1]); g.lineTo(q[0],q[1]); g.stroke(); };
+  poly([[-hw,y0,0],[hw,y0,0],[hw,y1,0],[-hw,y1,0]], '#0b0f18');                                   // floor + walls
+  if (v.room) { poly([[-hw,y1,0],[hw,y1,0],[hw,y1,rh],[-hw,y1,rh]], '#0e1320', '#1e2638'); poly([[-hw,y0,0],[-hw,y1,0],[-hw,y1,rh],[-hw,y0,rh]], '#0c111c', '#1a2132');
+    poly([[hw,y0,0],[hw,y1,0],[hw,y1,rh],[hw,y0,rh]], '#0c111c', '#1a2132'); }
+  for (let x = Math.ceil(-hw); x <= hw; x++) line([x,y0,0],[x,y1,0],'#1a2234');
+  for (let y = Math.ceil(y0); y <= y1; y++) line([-hw,y,0],[hw,y,0],'#1a2234');
+  if (v.audience) { const [ax0,ax1,ay0,ay1] = v.audience; poly([[ax0,ay0,0.005],[ax1,ay0,0.005],[ax1,ay1,0.005],[ax0,ay1,0.005]], 'rgba(124,92,255,0.07)'); }
+  const polys = [];
+  const addBox = (corners, color, emit, sel) => { const pc = corners.map(P); if (pc.some(p=>!p)) return;
+    for (const f of FACES) { const pts = f.map(i=>pc[i]), z = pts.reduce((s,p)=>s+p[2],0)/4;
+      const n = V.norm(V.cross(V.sub(corners[f[1]],corners[f[0]]), V.sub(corners[f[3]],corners[f[0]]))), shade = 0.5 + 0.5*Math.abs(n[2]*0.7 + n[0]*0.4 + n[1]*0.2);
+      polys.push({z, pts, color, shade, emit, sel}); } };
+  for (const [k, a, b] of (st.solids || S.idleStage?.solids || [])) {
+    if (k === 'box') addBox([0,1,2,3,4,5,6,7].map(i => [i&4?b[0]:a[0], i&2?b[1]:a[1], i&1?b[2]:a[2]]), [46,54,72]);
+    else { const p = P(a); if (p) polys.push({z:p[2], circle:[p[0],p[1], b*P.F/p[2]]}); } }
+  for (const p of st.parts) { const em = p.emit, lit = Math.max(...em) > 0.01, sel = owner(p.name) === S.sel;
+    addBox(boxCorners(p.c, p.ax, p.ay, p.az, p.half), lit ? em.map(x => Math.min(255, x*255*3)) : [72,80,98], lit, sel); }
+  polys.sort((a,b) => b.z - a.z);
+  for (const p of polys) {
+    if (p.circle) { g.fillStyle = '#10241a'; g.beginPath(); g.arc(p.circle[0], p.circle[1], p.circle[2], 0, 7); g.fill(); continue; }
+    const c = p.emit ? p.color : p.color.map(x => x*p.shade);
+    g.fillStyle = `rgb(${c[0]|0},${c[1]|0},${c[2]|0})`; g.beginPath(); p.pts.forEach((q,i)=> i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1])); g.closePath(); g.fill();
+    g.strokeStyle = p.sel ? '#22d3ee' : 'rgba(255,255,255,0.08)'; g.lineWidth = (p.sel ? 2 : 1)*d; g.stroke(); }
+  // beams: soft glow + core cone, additive; clipped at walls/ceiling/floor
+  g.globalCompositeOperation = 'lighter';
+  for (const b of st.beams) {
+    const m = Math.max(...b.rgb); if (m <= 0.001) continue; const col = b.rgb.map(x => Math.round(x/m*255)), alpha = Math.min(0.95, (0.3 + Math.min(1, m)*0.55)) * (0.25 + HAZE);
+    let L = Math.min(b.length, 30);
+    { const lo = [-hw, y0, 0], hi = [hw, v.room ? y1 : 99, v.room ? rh : 99];
+      for (let i = 0; i < 3; i++) { if (Math.abs(b.dir[i]) < 1e-6) continue; const t = ((b.dir[i] > 0 ? hi[i] : lo[i]) - b.pos[i]) / b.dir[i]; if (t > 0) L = Math.min(L, t); } }
+    // a real cone: lens + a ring at the far end, projected and filled as a convex hull — visible from every angle
+    const near = 0.3, dep = q => V.dot(V.sub(q, P.e), P.f), d0 = dep(b.pos); if (d0 < near) continue;   // light behind the camera
+    const df = V.dot(b.dir, P.f); if (df < 0) L = Math.min(L, (d0 - near) / -df);                      // clip where it would pass the camera
+    if (L < 0.05) continue;
+    const end = V.add(b.pos, V.mul(b.dir, L)), a = P(b.pos), e = P(end); if (!a || !e) continue;
+    const u0 = V.norm(V.cross(b.dir, Math.abs(b.dir[2]) < 0.9 ? [0,0,1] : [1,0,0])), w0 = V.cross(b.dir, u0), R = Math.max(0.05, b.tan_half*L + 0.04);
+    const cone = (k) => { const pts = [[a[0], a[1]]];
+      for (let i = 0; i < 18; i++) { const t = i/18*Math.PI*2, q = P(V.add(end, V.add(V.mul(u0, Math.cos(t)*R*k), V.mul(w0, Math.sin(t)*R*k)))); if (q) pts.push([q[0], q[1]]); }
+      return hull(pts); };
+    const ringR = Math.max(4*d, ...cone(1).map(q => Math.hypot(q[0]-e[0], q[1]-e[1])));
+    const wash = Math.min(1, 0.3*H / ringR);                                                           // don't white out the screen head-on
+    const headOn = Math.hypot(e[0]-a[0], e[1]-a[1]) < 0.6*ringR;
+    for (const [kk, ak] of [[1.7, 0.2], [1, 0.85]]) {
+      const pts = cone(kk); if (pts.length < 3) continue; let gr;
+      if (headOn) { gr = g.createRadialGradient(a[0], a[1], 0, e[0], e[1], ringR*kk); gr.addColorStop(0, `rgba(${col},${alpha*ak*wash})`); gr.addColorStop(1, `rgba(${col},${alpha*ak*wash*0.1})`); }
+      else { gr = g.createLinearGradient(a[0],a[1],e[0],e[1]); gr.addColorStop(0, `rgba(${col},${alpha*ak*wash})`); gr.addColorStop(0.7, `rgba(${col},${alpha*ak*wash*0.35})`); gr.addColorStop(1, `rgba(${col},${alpha*ak*wash*0.1})`); }
+      g.fillStyle = gr; g.beginPath(); pts.forEach((q,i) => i ? g.lineTo(q[0],q[1]) : g.moveTo(q[0],q[1])); g.closePath(); g.fill(); }
+    const lg = 16*d, rg = g.createRadialGradient(a[0],a[1],0,a[0],a[1],lg); rg.addColorStop(0, `rgba(255,255,255,0.9)`); rg.addColorStop(0.25, `rgba(${col},0.9)`); rg.addColorStop(1, `rgba(${col},0)`);
+    g.fillStyle = rg; g.beginPath(); g.arc(a[0],a[1],lg,0,7); g.fill();
+    if (L < 29.9 && !headOn) { const pr = Math.min(ringR*1.2 + 6*d, 0.25*H), pg = g.createRadialGradient(e[0],e[1],0,e[0],e[1],pr);                 // pool where it lands
+      pg.addColorStop(0,`rgba(${col},${Math.min(1, alpha*0.9*wash)})`); pg.addColorStop(1,`rgba(${col},0)`); g.fillStyle = pg; g.beginPath(); g.arc(e[0], e[1], pr, 0, 7); g.fill(); } }
+  g.globalCompositeOperation = 'source-over';
+  if (S.rig) { g.font = `600 ${11*d}px ui-sans-serif`;                                                // labels + selection halo
+    for (const f of S.rig.fixtures) { const pos = S.drag && S.drag.name === f.name ? S.drag.pos : f.pos, p = P(V.add(pos, [0,0,0.42])); if (!p) continue;
+      if (f.name === S.sel) { const q = P(pos); if (q) { g.strokeStyle = '#22d3ee'; g.lineWidth = 2*d; g.setLineDash([5*d,4*d]); g.beginPath(); g.arc(q[0], q[1], 22*d, 0, 7); g.stroke(); g.setLineDash([]); }
+        if (S.drag) { const fl = P([pos[0], pos[1], 0]); if (fl && q) { g.strokeStyle = 'rgba(34,211,238,.6)'; g.beginPath(); g.moveTo(q[0],q[1]); g.lineTo(fl[0],fl[1]); g.stroke(); }
+          g.fillStyle = '#22d3ee'; g.fillText(`x ${pos[0].toFixed(2)}  y ${pos[1].toFixed(2)}  z ${pos[2].toFixed(2)} m`, p[0]+8*d, p[1]-14*d); } }
+      if (canvas.id === 'stageMain' || $('#labels').checked || f.name === S.sel) {
+        const tr = S.status?.travel?.[f.name]; g.fillStyle = f.name === S.sel ? '#e6faff' : 'rgba(200,208,224,.85)';
+        g.fillText(f.name + (tr > 3 ? `  ↻${Math.round(tr)}°` : ''), p[0]+8*d, p[1]); } } }
+}
+// orbit / pick / drag
+function hitFixture(canvas, mx, my){
+  const P = canvas._P; if (!P || !S.rig) return null; const d = devicePixelRatio||1; let best = null, bd = 26*d;
+  for (const f of S.rig.fixtures) { const p = P(f.pos); if (!p) continue; const dd = Math.hypot(p[0]-mx, p[1]-my); if (dd < bd) { bd = dd; best = f; } }
+  return best;
+}
+function interact(canvas, cam){
+  let down = null;
+  canvas.addEventListener('mousedown', e => {
+    const r = canvas.getBoundingClientRect(), d = devicePixelRatio||1, mx = (e.clientX-r.left)*d, my = (e.clientY-r.top)*d, hit = hitFixture(canvas, mx, my);
+    down = {x:e.clientX, y:e.clientY, yaw:cam.yaw, pitch:cam.pitch, moved:false, hit};
+    if (hit && hit.name === S.sel && canvas._P) { const q = canvas._P(hit.pos); S.drag = {name:hit.name, orig:[...hit.pos], pos:[...hit.pos], mx, my, depth: q ? q[2] : cam.dist}; canvas.style.cursor = 'move'; }
+  });
+  window.addEventListener('mousemove', e => {
+    if (!down) return; const dx = e.clientX-down.x, dy = e.clientY-down.y; if (Math.hypot(dx,dy) > 3) down.moved = true;
+    if (S.drag && canvas._P) { const r = canvas.getBoundingClientRect(), d = devicePixelRatio||1, mx = (e.clientX-r.left)*d, my = (e.clientY-r.top)*d;
+      const P = canvas._P, k = S.drag.depth / P.F, ddx = mx - S.drag.mx, ddy = my - S.drag.my, r2 = (a, n) => Math.round(a*n)/n;
+      if (e.shiftKey) S.drag.pos[2] = Math.max(0, r2(S.drag.orig[2] - ddy * k, 20));                   // shift: height
+      else { const rh = V.norm([P.r[0], P.r[1], 0]), fh = V.norm([P.f[0], P.f[1], 0]), fore = 1 / Math.max(0.3, Math.sin(cam.pitch) + 0.15);
+        S.drag.pos[0] = r2(S.drag.orig[0] + (rh[0]*ddx - fh[0]*ddy*fore) * k, 20); S.drag.pos[1] = r2(S.drag.orig[1] + (rh[1]*ddx - fh[1]*ddy*fore) * k, 20); }
+      return; }
+    cam.yaw = down.yaw + dx*0.008;                                                         // grab-the-world: the scene follows the hand cam.pitch = Math.max(-0.05, Math.min(1.5, down.pitch + dy*0.006));
+  });
+  window.addEventListener('mouseup', run(async () => {
+    if (!down) return; const dn = down; down = null; canvas.style.cursor = 'grab';
+    if (S.drag) { const dr = S.drag; if (dn.moved) { await saveLight(dr.name, {pos: dr.pos}); toast(`${dr.name} moved to ${dr.pos.map(x=>x.toFixed(2)).join(', ')} m`); } S.drag = null; return; }
+    if (!dn.moved) { select(dn.hit ? dn.hit.name : null); }
+  }));
+  canvas.addEventListener('wheel', e => { e.preventDefault(); cam.dist = Math.max(2.5, Math.min(45, cam.dist * (e.deltaY>0?1.1:0.9))); }, {passive:false});
+}
+interact($('#stageMain'), cams.main); interact($('#stageBig'), cams.big);
+function render(){ if (S.tab==='show') draw3D($('#stageMain'), cams.main); else if (S.tab==='stage') draw3D($('#stageBig'), cams.big); requestAnimationFrame(render); }
+function autoFrame(){
+  if (!S.rig || S.framed === S.rig.name) return; S.framed = S.rig.name;
+  const ps = S.rig.fixtures.map(f => f.pos); const deck = (S.rig.venue||{}).deck || [2,1,0]; ps.push([-deck[0]/2, 0, 0], [deck[0]/2, deck[1], deck[2]]);
+  const lo = [0,1,2].map(i => Math.min(...ps.map(p=>p[i]))), hi = [0,1,2].map(i => Math.max(...ps.map(p=>p[i])));
+  const c = lo.map((v,i) => (v+hi[i])/2), ext = Math.max(hi[0]-lo[0], hi[2]-lo[2], 2);
+  for (const cam of [cams.main, cams.big]) Object.assign(cam, {tgt: [c[0], c[1] - 0.6, Math.max(1, c[2])], dist: Math.max(5, Math.min(30, ext * 1.9 + 3.5)), yaw: 0.3, pitch: 0.18});
+  for (const k of Object.keys(VIEWS)) VIEWS[k][2] = Math.max(4, Math.min(30, (k==='dj' ? 0.6 : k==='wide' ? 1.3 : 1) * (ext * 1.9 + 3.5)));
+}
+const refreshIdle = run(async () => { if (!S.rigName) return; S.idleStage = await api('/api/stage?rig='+encodeURIComponent(S.rigName)+($('#restBeams').checked?'&preview=1':'')); });
+
+// ---------- inspector ----------
+function dockInspector(){ const dk = $(`.dock[data-dock="${S.tab}"]`); if (dk) dk.appendChild($('#insp')); renderInspector(); }
+function select(name){ S.sel = name; renderInspector(); }
+const saveLight = async (name, kv) => { S.rig = await api('/api/rig/set', {rig:S.rigName, light:name, ...kv}); await refreshIdle(); renderInspector(); if (S.tab==='rig') loadRig(); };
+const num = (id, v, step) => `<input type="number" id="${id}" value="${v}" step="${step||0.1}">`;
+function sliderRow(label, key, val, min, max, step){ return `<div class="f"><span class="muted">${label}</span><input type="range" data-s="${key}" min="${min}" max="${max}" step="${step}" value="${val}"><input type="number" data-n="${key}" value="${val}" step="${step}"></div>`; }
+function renderInspector(){
+  const el = $('#insp'); if (!S.rig) { el.innerHTML = '<h3>Inspector</h3><div class="dim">No rig loaded.</div>'; return; }
+  const f = S.sel && S.rig.fixtures.find(x => x.name === S.sel); const v = S.rig.venue || {}, room = v.room || [10,10,3], deck = v.deck || [2,1,0];
+  if (!f) {
+    el.innerHTML = `<h3>Venue · ${esc(S.rig.name)}</h3><div class="dim" style="font-size:12px">Click a light in the 3D view to edit it.</div>
+      <h4>Room (m)</h4><div class="f2"><span class="muted">Width</span>${num('vRw', room[0], 0.5)}</div><div class="f2"><span class="muted">Depth</span>${num('vRd', room[1], 0.5)}</div><div class="f2"><span class="muted">Ceiling</span>${num('vRh', room[2], 0.1)}</div>
+      <h4>DJ booth / riser (m)</h4><div class="f2"><span class="muted">Width</span>${num('vDw', deck[0])}</div><div class="f2"><span class="muted">Depth</span>${num('vDd', deck[1])}</div><div class="f2"><span class="muted">Height</span>${num('vDh', deck[2])}</div>
+      <h4>Truss</h4><div class="f2"><label class="toggle"><input type="checkbox" id="vT" ${v.truss?'checked':''}> on</label>${num('vTh', v.truss ? v.truss[2] : Math.min(room[2]-0.3, deck[2]+2.6), 0.1)}</div>
+      <div class="row" style="margin-top:12px"><button class="btn primary" id="vSave">Save venue</button><button class="btn" id="vUndo">↶ Undo</button></div>
+      <h4>Lights</h4><div class="row">${S.rig.fixtures.map(x => `<button class="btn small" data-pick="${esc(x.name)}">${esc(x.name)}</button>`).join('')}</div>`;
+    $$('#insp [data-pick]').forEach(b => b.onclick = () => select(b.dataset.pick));
+    $('#vSave').onclick = run(async () => { S.rig = await api('/api/rig/venue', {rig:S.rigName, room:[+$('#vRw').value, +$('#vRd').value, +$('#vRh').value], deck:[+$('#vDw').value, +$('#vDd').value, +$('#vDh').value],
+      truss:$('#vT').checked, truss_height:$('#vT').checked ? +$('#vTh').value : null}); await refreshIdle(); renderInspector(); toast('Venue saved'); });
+    $('#vUndo').onclick = undo; return;
+  }
+  const xr = [-room[0]/2, room[0]/2], yr = [-room[1], deck[1]+3];
+  el.innerHTML = `<div class="title"><input id="iName" value="${esc(f.name)}" title="rename"><span class="kind ${f.kind}">${f.kind}</span><span class="grow"></span><button class="btn small" id="iClose" title="deselect">✕</button></div>
+    <div class="dim" style="font-size:12px;margin:2px 6px">${esc(f.model || f.profile)} · <span class="mono">${esc(f.profile)}</span> (${f.status})</div>
+    <h4>DMX</h4><div class="f2"><span class="muted">Address</span><div class="row"><input type="number" id="iAddr" value="${f.address}" min="1" max="512" style="width:80px"><span class="dim mono">–${f.last} · DIP ${f.dip.join(',')}</span></div></div>
+    ${f.modes.length > 1 ? `<div class="f2"><span class="muted">Mode</span><select id="iMode">${f.modes.map(m=>`<option ${m===f.mode?'selected':''}>${m}</option>`).join('')}</select></div>` : ''}
+    <h4>Position (m)</h4>${sliderRow('X ←→', 'x', f.pos[0], xr[0], xr[1], 0.05)}${sliderRow('Y depth', 'y', f.pos[1], yr[0], yr[1], 0.05)}${sliderRow('Z height', 'z', f.pos[2], 0, room[2], 0.05)}
+    <div class="f2"><span class="muted">Where</span><input type="text" id="iWhere" value="${esc(f.where)}" placeholder="re-place in words: truss left, floor behind…"></div>
+    <h4>Mounting</h4><div class="f2"><span class="muted">Mount</span><select id="iMount"><option value="floor" ${f.mount!=='hung'?'selected':''}>standing (floor / stand)</option><option value="hung" ${f.mount==='hung'?'selected':''}>hanging (truss / ceiling)</option></select></div>
+    ${sliderRow('Yaw', 'yaw', f.yaw, -180, 180, 1)}${sliderRow('Pitch', 'pitch', f.pitch, -90, 90, 1)}${sliderRow('Roll', 'roll', f.roll, -180, 180, 1)}
+    ${f.moves ? `<h4>Motor speed (deg/s)</h4>
+      <div class="f2"><span class="muted">Pan</span><input type="number" id="iPs" value="${f.pan_speed ?? ''}" placeholder="${f.speed[0]} (profile/type default)" step="5"></div>
+      <div class="f2"><span class="muted">Tilt</span><input type="number" id="iTs" value="${f.tilt_speed ?? ''}" placeholder="${f.speed[1]} (profile/type default)" step="5"></div>
+      <div class="dim" style="font-size:12px">Time a full ${f.pan_deg}° pan on the real head: speed = ${f.pan_deg} ÷ seconds. Shows start moves early enough for this speed.</div>
+      <div class="f2" style="margin-top:6px"><span class="muted">Travel</span><div class="meter"><i id="iTravel"></i></div></div>
+      <div class="f2"><span class="muted">Pan dir</span><label class="toggle"><input type="checkbox" id="iInv" ${f.invert_pan?'checked':''}> flip (head swings to the mirror side)</label></div>
+      <div class="f2"><span class="muted">Aim test</span><div class="row"><select id="iTgt"><option>dancefloor</option><option>dj</option><option>up</option><option>back</option><option>ceiling</option></select><button class="btn small" id="iPoint">Point</button></div></div>`
+    : `<h4>Aim</h4><div class="f2"><span class="muted">Point at</span><div class="row"><select id="iAim"><option value="">keep (${f.aim.map(x=>Math.round(x)).join('°, ')}°)</option><option>dancefloor</option><option>dj</option><option>up</option><option>back</option><option>crowd</option><option>ceiling</option></select></div></div>`}
+    <div class="row" style="margin-top:14px"><button class="btn" id="iTest">Flash / test</button><button class="btn" id="iUndo">↶ Undo</button><span class="grow"></span><button class="btn danger" id="iDel">Delete</button></div>`;
+  $('#iClose').onclick = () => select(null);
+  const keymap = {x:0, y:1, z:2};
+  $$('#insp [data-s]').forEach(sl => { const k = sl.dataset.s, box = $(`#insp [data-n="${k}"]`);
+    sl.oninput = () => { box.value = sl.value; if (k in keymap) { S.drag = S.drag || {name:f.name, orig:[...f.pos], pos:[...f.pos]}; S.drag.pos[keymap[k]] = +sl.value; } };
+    const commit = run(async () => { const val = +box.value; sl.value = val;
+      if (k in keymap) { const pos = S.drag ? S.drag.pos : [...f.pos]; pos[keymap[k]] = val; S.drag = null; await saveLight(f.name, {pos}); }
+      else await saveLight(f.name, {[k]: val}); });
+    sl.onchange = commit; box.onchange = commit; });
+  const bind = (id, fn) => { const x = $(id); if (x) x.onchange = run(fn); };
+  bind('#iAddr', async () => { await saveLight(f.name, {address: +$('#iAddr').value}); toast(`${f.name} → address ${$('#iAddr').value}`); });
+  bind('#iMode', async () => saveLight(f.name, {mode: $('#iMode').value}));
+  bind('#iWhere', async () => saveLight(f.name, {where: $('#iWhere').value}));
+  bind('#iMount', async () => saveLight(f.name, {mount: $('#iMount').value}));
+  bind('#iPs', async () => saveLight(f.name, {pan_speed: $('#iPs').value ? +$('#iPs').value : null}));
+  bind('#iTs', async () => saveLight(f.name, {tilt_speed: $('#iTs').value ? +$('#iTs').value : null}));
+  bind('#iInv', async () => saveLight(f.name, {invert_pan: $('#iInv').checked}));
+  bind('#iAim', async () => { if ($('#iAim').value) await saveLight(f.name, {aim: $('#iAim').value}); });
+  bind('#iName', async () => { const nn = $('#iName').value.trim(); if (nn && nn !== f.name) { S.rig = await api('/api/rig/set', {rig:S.rigName, light:f.name, rename:nn}); S.sel = nn; await refreshIdle(); renderInspector(); } });
+  if ($('#iPoint')) $('#iPoint').onclick = run(async () => { await api('/api/point', {rig:S.rigName, light:f.name, target:$('#iTgt').value}); toast(`${f.name} pointing at ${$('#iTgt').value} — watch the 3D view and the real head`); });
+  $('#iTest').onclick = run(async () => { await api('/api/test', {rig:S.rigName, light:f.name, seconds:1.0}); toast('Testing '+f.name+' channel by channel'); });
+  $('#iUndo').onclick = undo;
+  $('#iDel').onclick = run(async () => { if (!confirm('Delete '+f.name+' from the rig?')) return; S.rig = await api('/api/rig/remove', {rig:S.rigName, lights:[f.name]}); S.sel = null; await refreshIdle(); renderInspector(); });
+}
+const undo = run(async () => { const d = await api('/api/rig/undo', {rig:S.rigName}); S.rig = d; await refreshIdle(); renderInspector(); if (S.tab==='rig') loadRig(); toast(`Undone (${d.undo_left} more)`); });
+$('#undoBtn').onclick = undo; $('#restBeams').onchange = refreshIdle;
+$('#testSelBtn').onclick = run(async () => { await api('/api/test', {rig:S.rigName, light:S.sel||null, seconds:1.2}); toast(S.sel ? 'Testing '+S.sel : 'Flashing each light'); });
+
+// ---------- rig ----------
+const loadRig = run(async () => {
+  if (!S.rigName) { $('#rigSummary').textContent = 'No rig yet — create one below.'; return; }
+  const r = S.rig = await api('/api/rig?name='+encodeURIComponent(S.rigName));
+  const v = r.venue || {}; $('#rigSummary').innerHTML = `<b>${esc(r.name)}</b> · ${r.fixtures.length} lights · venue ${esc(v.template||'custom')}` +
+    (v.room ? ` · room ${v.room.join('×')} m` : '') + `<br><span class="dim">${Object.entries(r.check.groups).filter(([g])=>['wash','movers','effects','strobes','lasers','fog'].includes(g)).map(([g,l])=>g+' '+l.length).join(' · ')}</span>`;
+  $('#rigTable tbody').innerHTML = r.fixtures.map(f => `<tr data-n="${esc(f.name)}">
+    <td><b>${esc(f.name)}</b></td><td><span title="${esc(f.model)}">${esc(f.profile)}</span> <span class="dim">${f.status}</span></td>
+    <td><span class="kind ${f.kind}">${f.kind}</span></td>
+    <td>${f.modes.length>1 ? `<select data-k="mode">${f.modes.map(m=>`<option ${m===f.mode?'selected':''}>${m}</option>`).join('')}</select>` : f.mode}</td>
+    <td class="nw"><input type="number" data-k="address" value="${f.address}" min="1" max="512"> <span class="dim mono">–${f.last}</span></td>
+    <td class="mono">${f.dip.join(',')}</td><td><input type="text" data-k="where" value="${esc(f.where)}"></td>
+    <td>${f.kind==='mover' ? `<label class="toggle" title="tick if the head swings to the mirror side"><input type="checkbox" data-k="invert_pan" ${f.invert_pan?'checked':''}> flip</label>` : ''}</td>
+    <td class="row" style="flex-wrap:nowrap"><button class="btn small" data-a="test">Test</button>${f.kind==='mover'?'<button class="btn small" data-a="point">Aim</button>':''}<button class="btn small danger" data-a="rm">✕</button></td></tr>`).join('')
+    || '<tr><td colspan="9" class="dim">No lights yet — add some on the left.</td></tr>';
+  $$('#rigTable [data-k]').forEach(el => el.onchange = run(async () => { const n = el.closest('tr').dataset.n, k = el.dataset.k;
+    const val = el.type==='checkbox' ? el.checked : el.type==='number' ? +el.value : el.value;
+    S.rig = await api('/api/rig/set', {rig:S.rigName, light:n, [k]: val}); toast(`${n}: ${k} updated`); refreshIdle(); loadRig(); }));
+  $$('#rigTable [data-a]').forEach(el => el.onclick = run(async () => { const n = el.closest('tr').dataset.n, a = el.dataset.a;
+    if (a==='rm') { if (!confirm('Remove '+n+'?')) return; await api('/api/rig/remove', {rig:S.rigName, lights:[n]}); refreshIdle(); loadRig(); }
+    if (a==='test') { await api('/api/test', {rig:S.rigName, light:n, seconds:1.2}); toast('Testing '+n+' channel by channel'); }
+    if (a==='point') { const t = prompt('Aim at: dancefloor, dj, up, back, crowd, ceiling', 'dancefloor'); if (t) { await api('/api/point', {rig:S.rigName, light:n, target:t}); toast(n+' aimed at '+t+' — if it is on the mirror side tick "flip"'); } } }));
+  $('#rigWarn').innerHTML = r.check.errors.map(e=>`<div class="warn err">✕ ${esc(e)}</div>`).join('') + r.check.warnings.slice(0,12).map(w=>`<div class="warn">⚠ ${esc(w)}</div>`).join('');
+  drawPlan(); renderInspector(); autoFrame();
+});
+$('#testAll').onclick = run(async () => { await api('/api/test', {rig:S.rigName}); toast('Flashing each light in address order'); });
+$('#newRigBtn').onclick = run(async () => { const name = $('#newRigName').value.trim(); if (!name) return toast('Name the rig', true);
+  await api('/api/rig/new', {name, venue:$('#newRigVenue').value, truss:$('#newRigTruss').checked}); S.rigName = name; S.sel = null; await loadRigs(); await refreshIdle(); loadRig(); toast('Created '+name); });
+let profT = 0; $('#profQ').oninput = () => { clearTimeout(profT); profT = setTimeout(searchProfiles, 250); }; $('#profOfl').onchange = () => searchProfiles();
+const searchProfiles = run(async () => {
+  const q = $('#profQ').value.trim();
+  if ($('#profOfl').checked) { if (q.length < 3) return; const keys = await api('/api/ofl?q='+encodeURIComponent(q));
+    $('#profList').innerHTML = keys.map(k => `<div class="item" data-ofl="${esc(k)}"><span>${esc(k)}</span><small>import</small></div>`).join('') || '<div class="item dim">no match</div>';
+    $$('#profList [data-ofl]').forEach(el => el.onclick = run(async () => { toast('Importing '+el.dataset.ofl+'…'); const d = await api('/api/ofl/import', {key:el.dataset.ofl, force:true});
+      $('#profOfl').checked = false; $('#profQ').value = d.profile; await searchProfiles(); })); return; }
+  const list = await api('/api/profiles?q='+encodeURIComponent(q));
+  $('#profList').innerHTML = list.map(p => `<div class="item ${S.selProfile===p.name?'sel':''}" data-p="${esc(p.name)}" data-modes="${esc(p.modes.join(','))}"><span>${esc(p.model||p.name)}<br><small class="mono">${esc(p.name)}</small></span><small>${p.channels}ch · ${p.status}</small></div>`).join('');
+  $$('#profList [data-p]').forEach(el => el.onclick = () => { S.selProfile = el.dataset.p; $$('#profList .item').forEach(x=>x.classList.toggle('sel', x===el));
+    $('#addMode').innerHTML = el.dataset.modes.split(',').map(m=>`<option>${m}</option>`).join(''); $('#addBtn').disabled = false; });
+});
+$('#addBtn').onclick = run(async () => { const d = await api('/api/rig/add', {rig:S.rigName, profile:S.selProfile, count:+$('#addCount').value, where:$('#addWhere').value, mode:$('#addMode').value});
+  toast('Added '+d.added.join(', ')); refreshIdle(); loadRig(); });
+$('#npBtn').onclick = run(async () => { const d = await api('/api/profile/new', {name:$('#npName').value.trim(), channels:$('#npCh').value, type:$('#npType').value});
+  toast('Profile '+d.profile+' created'); $('#profQ').value = d.profile; searchProfiles(); });
+// plan view
+const planView = {}; let planDrag = null;
+function drawPlan(){
+  const r = S.rig; if (!r) return; const [g, W, H, d] = fitCanvas($('#plan')); const v = r.venue||{}, room = v.room||[12,12,5], deck = v.deck||[2,1,0];
+  // frame the lights + booth (not the whole room): bounds of everything placed, padded, at least 7 x 6 m
+  const px = r.fixtures.map(f=>f.pos[0]).concat([-deck[0]/2, deck[0]/2]), py = r.fixtures.map(f=>f.pos[1]).concat([0, deck[1]]);
+  let xs = [Math.min(...px)-2, Math.max(...px)+2], ys = [Math.min(...py)-4, Math.max(...py)+1.5];
+  if (xs[1]-xs[0] < 7) { const c = (xs[0]+xs[1])/2; xs = [c-3.5, c+3.5]; } if (ys[1]-ys[0] < 6) ys[0] = ys[1]-6;
+  xs = [Math.max(xs[0], -room[0]/2-0.5), Math.min(xs[1], room[0]/2+0.5)];
+  const k = Math.min((W-40*d)/(xs[1]-xs[0]), (H-40*d)/(ys[1]-ys[0]));
+  Object.assign(planView, {k, ox: W/2 - (xs[0]+xs[1])/2*k, oy: 20*d + ys[1]*k, d});
+  const X = x => planView.ox + x*k, Y = y => planView.oy - y*k;
+  g.fillStyle = '#07090d'; g.fillRect(0,0,W,H); g.strokeStyle = '#141a26'; g.lineWidth = d;
+  for (let x = Math.ceil(xs[0]); x <= xs[1]; x++) { g.beginPath(); g.moveTo(X(x), Y(ys[0])); g.lineTo(X(x), Y(ys[1])); g.stroke(); }
+  for (let y = Math.ceil(ys[0]); y <= ys[1]; y++) { g.beginPath(); g.moveTo(X(xs[0]), Y(y)); g.lineTo(X(xs[1]), Y(y)); g.stroke(); }
+  if (v.audience) { const [a0,a1,b0,b1] = v.audience; g.fillStyle = 'rgba(124,92,255,0.08)'; g.fillRect(X(a0), Y(b1), (a1-a0)*k, (b1-b0)*k);
+    g.fillStyle = '#5d6578'; g.font = `${12*d}px ui-sans-serif`; g.fillText('dance floor / crowd ↓', X(Math.max(a0, xs[0]))+8*d, Y(b1)+16*d); }
+  g.fillStyle = '#262c3a'; g.fillRect(X(-deck[0]/2), Y(deck[1]), deck[0]*k, deck[1]*k); g.fillStyle = '#8a93a6'; g.fillText('DJ booth', X(-deck[0]/2)+4*d, Y(deck[1]/2));
+  if (v.truss) { const [tx, ty] = v.truss; g.strokeStyle = '#6b7280'; g.lineWidth = 3*d; g.beginPath(); g.moveTo(X(-tx), Y(ty)); g.lineTo(X(tx), Y(ty)); g.stroke(); }
+  const KC = {wash:'#3b82f6', mover:'#d946ef', effect:'#f59e0b', strobe:'#e5e7eb', laser:'#ef4444', fog:'#34d399', other:'#6b7280'};
+  const placed = [];
+  for (const f of r.fixtures) { const p = planDrag && planDrag.name===f.name ? planDrag.pos : f.pos;
+    g.fillStyle = KC[f.kind]||'#888'; g.beginPath(); g.arc(X(p[0]), Y(p[1]), 7*d, 0, 7); g.fill();
+    g.strokeStyle = '#000'; g.lineWidth = 2*d; g.stroke();
+    let ly = Y(p[1]) - 10*d; while (placed.some(q => Math.abs(q[0]-X(p[0])) < 70*d && Math.abs(q[1]-ly) < 13*d)) ly -= 13*d;   // stack labels that would collide
+    placed.push([X(p[0]), ly]); g.fillStyle = '#e6e9ef'; g.font = `${11*d}px ui-sans-serif`; g.textAlign = 'center';
+    g.fillText(f.name, X(p[0]), ly); g.fillStyle = '#5d6578'; g.fillText(`${p[2].toFixed(1)}m`, X(p[0]), Y(p[1]) + 19*d); g.textAlign = 'left'; }
+  g.fillStyle = '#5d6578'; g.font = `${11*d}px ui-sans-serif`;
+  Object.entries(KC).slice(0,6).forEach(([kk,c],i) => { g.fillStyle = c; g.fillRect(12*d + i*72*d, H-18*d, 9*d, 9*d); g.fillStyle = '#8a93a6'; g.fillText(kk, 25*d + i*72*d, H-10*d); });
+}
+const plan = $('#plan');
+plan.onmousedown = e => { if (!S.rig) return; const r = plan.getBoundingClientRect(), d = planView.d, mx = (e.clientX-r.left)*d, my = (e.clientY-r.top)*d;
+  const hit = S.rig.fixtures.find(f => Math.hypot(planView.ox + f.pos[0]*planView.k - mx, planView.oy - f.pos[1]*planView.k - my) < 12*d);
+  if (hit) planDrag = {name: hit.name, pos: [...hit.pos]}; };
+plan.onmousemove = e => { if (!planDrag) return; const r = plan.getBoundingClientRect(), d = planView.d;
+  planDrag.pos[0] = Math.round(((e.clientX-r.left)*d - planView.ox)/planView.k*10)/10; planDrag.pos[1] = Math.round((planView.oy - (e.clientY-r.top)*d)/planView.k*10)/10; drawPlan(); };
+window.addEventListener('mouseup', run(async () => { if (!planDrag) return; const p = planDrag; planDrag = null;
+  await api('/api/rig/set', {rig:S.rigName, light:p.name, pos:p.pos}); toast(`${p.name} moved to x ${p.pos[0]} m, y ${p.pos[1]} m`); refreshIdle(); loadRig(); }));
+
+// ---------- export ----------
+$('#exportBtn').onclick = run(async () => { if (!S.song) return toast('Pick a song first', true); $('#exportBtn').textContent = 'Exporting…';
+  try { const d = await api('/api/export', {file:S.song, formats:$$('.fmt').filter(x=>x.checked).map(x=>x.value), ...opts()});
+    $('#expResult').innerHTML = `<p><a class="btn primary" href="${d.download}">⬇ Download everything (.zip)</a></p>` +
+      Object.entries(d.file_urls).map(([k, fs]) => `<div style="margin:6px 0"><b>${k}</b>: ${fs.map(f=>`<a href="${f.url}">${esc(f.name)}</a>`).join(' · ')}</div>`).join('') +
+      `<details style="margin-top:10px"><summary class="muted">How to import (README)</summary><pre>${esc(d.readme)}</pre></details>`;
+    toast(`Exported ${d.frames} frames, ${d.cues} cues`);
+  } finally { $('#exportBtn').textContent = 'Export'; } });
+
+// ---------- setup ----------
+const loadSetup = run(async () => {
+  const [doc, set] = await Promise.all([api('/api/doctor'), api('/api/settings')]);
+  const ok = b => b ? '<span style="color:#86efac">✓</span>' : '<span style="color:#fca5a5">✕</span>';
+  $('#doctor').innerHTML = [['Music decoding (ffmpeg)', ok(doc.ffmpeg)], ['Analysis (numpy)', ok(doc.numpy)], ['Audio player', doc.audio_player||'none'],
+    ['USB-DMX dongle', doc.dmx_ports.filter(p=>p.ftdi).map(p=>esc(p.port)).join(', ') || '<span class="muted">none — simulation</span>'],
+    ['Rigs', esc(doc.rigs.join(', '))], ['Light profiles', doc.profiles], ['Vocal detection', doc.vocals_python ? ok(1) : '<span class="muted">not installed</span>']]
+    .map(([k,v]) => `<span class="muted">${k}</span><span>${v}</span>`).join('');
+  mcpSnippet(doc.mcp_server);
+  $('#tips').innerHTML = doc.tips.map(t => `<div class="warn">💡 ${esc(t)}</div>`).join('');
+  $('#sPort').value = ['auto','none'].includes(set.port) ? set.port : 'auto'; $('#sArtnet').value = set.artnet||''; $('#sLatency').value = set.latency_ms;
+  $('#sMaster').value = set.master; $('#sLibrary').value = set.library||''; $('#sRbx').value = set.rekordbox_xml||''; $('#sLead').value = String(set.mover_lead);
+});
+$('#saveSettings').onclick = run(async () => { await api('/api/settings', {port:$('#sPort').value, artnet:$('#sArtnet').value||null, latency_ms:+$('#sLatency').value,
+  master:+$('#sMaster').value, library:$('#sLibrary').value||null, rekordbox_xml:$('#sRbx').value||null, mover_lead:+$('#sLead').value}); toast('Saved'); loadSongs(); });
+function mcpSnippet(path){ $('#mcpSnip').textContent = `Claude Code:    claude mcp add --scope user dj-lights -- python3 ${path}
+Codex:          add to ~/.codex/config.toml
+                  [mcp_servers.dj-lights]
+                  command = "python3"
+                  args = ["${path}"]
+Claude Desktop: claude_desktop_config.json -> "mcpServers": {"dj-lights": {"command": "python3", "args": ["${path}"]}}
+
+Then just ask: "set up my lights: 4 RGBW pars behind me and 2 moving heads on the truss", "make a show for ~/Music/song.mp3 and play it",
+"export the show for QLC+", "go live with rekordbox".`; }
+
+// ---------- boot ----------
+function resizeAll(){ drawTimeline(); if (S.tab==='rig') drawPlan(); }
+window.addEventListener('resize', resizeAll);
+(async () => { await loadRigs().catch(e => toast(e.message, true)); loadPalettes().catch(()=>{}); loadSongs().catch(()=>{}); searchProfiles();
+  await refreshIdle(); await loadRig(); dockInspector(); connectStream(); requestAnimationFrame(render); })();
+</script>
+</body>
+</html>

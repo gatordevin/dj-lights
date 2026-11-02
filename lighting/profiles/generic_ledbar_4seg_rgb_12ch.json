@@ -1,0 +1,86 @@
+{
+ "name": "generic_ledbar_4seg_rgb_12ch",
+ "maker": "generic",
+ "model": "LED bar, 4 RGB segments (12-channel, R G B per segment, left to right)",
+ "type": "bar",
+ "status": "template",
+ "source": "generic template: the most common channel layout for this class of light. Check your light's manual: if the channel order differs, copy this file or build one with `python3 lighting/dj.py fixtures new`.",
+ "notes": "Each segment is one head: chases and spreads run along the bar. Many bars also have a dimmer/strobe mode with more channels; pick the pure RGB-per-segment mode on the unit.",
+ "channels": {
+  "red1": {
+   "role": "red",
+   "head": 0
+  },
+  "green1": {
+   "role": "green",
+   "head": 0
+  },
+  "blue1": {
+   "role": "blue",
+   "head": 0
+  },
+  "red2": {
+   "role": "red",
+   "head": 1
+  },
+  "green2": {
+   "role": "green",
+   "head": 1
+  },
+  "blue2": {
+   "role": "blue",
+   "head": 1
+  },
+  "red3": {
+   "role": "red",
+   "head": 2
+  },
+  "green3": {
+   "role": "green",
+   "head": 2
+  },
+  "blue3": {
+   "role": "blue",
+   "head": 2
+  },
+  "red4": {
+   "role": "red",
+   "head": 3
+  },
+  "green4": {
+   "role": "green",
+   "head": 3
+  },
+  "blue4": {
+   "role": "blue",
+   "head": 3
+  }
+ },
+ "modes": {
+  "12ch": [
+   "red1",
+   "green1",
+   "blue1",
+   "red2",
+   "green2",
+   "blue2",
+   "red3",
+   "green3",
+   "blue3",
+   "red4",
+   "green4",
+   "blue4"
+  ]
+ },
+ "default_mode": "12ch",
+ "optics": {
+  "beam_deg": 30,
+  "lumens": 600,
+  "aperture": 0.04,
+  "body": [
+   0.5,
+   0.08,
+   0.08
+  ]
+ }
+}

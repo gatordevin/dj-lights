@@ -1,0 +1,50 @@
+{
+ "name": "generic_rgbwauv_6ch",
+ "maker": "generic",
+ "model": "RGBWA+UV 6-in-1 par, 6-channel (R G B W A UV)",
+ "type": "par",
+ "status": "template",
+ "source": "generic template: the most common channel layout for this class of light. Check your light's manual: if the channel order differs, copy this file or build one with `python3 lighting/dj.py fixtures new`.",
+ "notes": "",
+ "channels": {
+  "red": {
+   "role": "red"
+  },
+  "green": {
+   "role": "green"
+  },
+  "blue": {
+   "role": "blue"
+  },
+  "white": {
+   "role": "white"
+  },
+  "amber": {
+   "role": "amber"
+  },
+  "uv": {
+   "role": "uv"
+  }
+ },
+ "modes": {
+  "6ch": [
+   "red",
+   "green",
+   "blue",
+   "white",
+   "amber",
+   "uv"
+  ]
+ },
+ "default_mode": "6ch",
+ "optics": {
+  "beam_deg": 25,
+  "lumens": 700,
+  "aperture": 0.08,
+  "body": [
+   0.17,
+   0.13,
+   0.18
+  ]
+ }
+}

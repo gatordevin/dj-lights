@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.DS_Store
+out/
+.venv*/
+.env
+.env.*
+*.pem
+*.key
+lighting/dj_settings.json
+lighting/song_fixes.json
+lighting/show_edits.json
+lighting/rigs/*.json
+!lighting/rigs/example_mobile.json
+!lighting/rigs/halloween.json
+lighting/profiles/ofl_*.json

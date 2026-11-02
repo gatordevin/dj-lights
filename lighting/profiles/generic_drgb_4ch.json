@@ -1,0 +1,42 @@
+{
+ "name": "generic_drgb_4ch",
+ "maker": "generic",
+ "model": "RGB par, 4-channel (dimmer R G B)",
+ "type": "par",
+ "status": "template",
+ "source": "generic template: the most common channel layout for this class of light. Check your light's manual: if the channel order differs, copy this file or build one with `python3 lighting/dj.py fixtures new`.",
+ "notes": "",
+ "channels": {
+  "dimmer": {
+   "role": "dimmer"
+  },
+  "red": {
+   "role": "red"
+  },
+  "green": {
+   "role": "green"
+  },
+  "blue": {
+   "role": "blue"
+  }
+ },
+ "modes": {
+  "4ch": [
+   "dimmer",
+   "red",
+   "green",
+   "blue"
+  ]
+ },
+ "default_mode": "4ch",
+ "optics": {
+  "beam_deg": 25,
+  "lumens": 700,
+  "aperture": 0.08,
+  "body": [
+   0.17,
+   0.13,
+   0.18
+  ]
+ }
+}

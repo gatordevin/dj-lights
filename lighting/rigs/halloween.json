@@ -1,0 +1,221 @@
+{
+ "name": "halloween",
+ "notes": "Plugged in 2026-10-12: dongle → beam1 (1) → par1 (21) → spider1 (41); the rest are planned (set their displays to these addresses). Layout from the owner's backyard photo 2026-10-12: 8x4 ft deck 4 ft high with a skirted step in front, truss goalpost with the 4 movers on the crossbar (~3 m), pars on the ground behind the stage uplighting the hedge/trees, round brick patio in front. Metres: x = audience right, y = away from the audience, z = up. 2026-10-12 revision (owner): spiders on the outside of the truss uprights, turned on their side facing the crowd (pitch 75, roll 90, splayed 15 deg outward) so the two tilt motors sweep the bars sideways; beams on the crossbar.",
+ "venue": {
+  "deck": [
+   2.44,
+   1.22,
+   1.22
+  ],
+  "step": [
+   2.6,
+   0.55,
+   0.5
+  ],
+  "truss": [
+   1.15,
+   0.65,
+   3.05,
+   0.29
+  ],
+  "patio": [
+   0.0,
+   -1.2,
+   4.8
+  ],
+  "hedge_back": [
+   2.7,
+   2.8,
+   12.0
+  ],
+  "hedge_ring": [
+   0.0,
+   -1.2,
+   6.3,
+   3.0
+  ],
+  "trees": [
+   [
+    -4.5,
+    5.5,
+    11.0,
+    4.0
+   ],
+   [
+    3.8,
+    6.5,
+    12.5,
+    4.5
+   ],
+   [
+    0.0,
+    9.0,
+    14.0,
+    5.0
+   ],
+   [
+    -8.5,
+    0.0,
+    9.0,
+    3.5
+   ],
+   [
+    8.5,
+    0.5,
+    10.0,
+    4.0
+   ]
+  ],
+  "haze": 0.5,
+  "audience": [
+   -6.0,
+   6.0,
+   -6.5,
+   -1.0
+  ],
+  "eye_z": [
+   1.0,
+   2.0
+  ]
+ },
+ "fixtures": [
+  {
+   "name": "beam1",
+   "profile": "djxfli_beam90",
+   "address": 1,
+   "groups": [
+    "movers",
+    "beams"
+   ],
+   "pos": [
+    -0.6,
+    0.65,
+    3.05
+   ]
+  },
+  {
+   "name": "par1",
+   "profile": "coz_par36_rgb",
+   "address": 21,
+   "groups": [
+    "pars",
+    "wash"
+   ],
+   "pos": [
+    -1.8,
+    1.9,
+    0.0
+   ],
+   "yaw": 180,
+   "aim": [
+    12,
+    0
+   ]
+  },
+  {
+   "name": "spider1",
+   "profile": "jcyw_spider_8x10",
+   "address": 41,
+   "groups": [
+    "movers",
+    "spiders"
+   ],
+   "pos": [
+    -1.42,
+    0.65,
+    2.45
+   ],
+   "yaw": -15,
+   "pitch": 75,
+   "roll": 90
+  },
+  {
+   "name": "par2",
+   "profile": "coz_par36_rgb",
+   "address": 61,
+   "groups": [
+    "pars",
+    "wash"
+   ],
+   "pos": [
+    -0.6,
+    1.9,
+    0.0
+   ],
+   "yaw": 180,
+   "aim": [
+    12,
+    0
+   ]
+  },
+  {
+   "name": "par3",
+   "profile": "coz_par36_rgb",
+   "address": 71,
+   "groups": [
+    "pars",
+    "wash"
+   ],
+   "pos": [
+    0.6,
+    1.9,
+    0.0
+   ],
+   "yaw": 180,
+   "aim": [
+    12,
+    0
+   ]
+  },
+  {
+   "name": "par4",
+   "profile": "coz_par36_rgb",
+   "address": 81,
+   "groups": [
+    "pars",
+    "wash"
+   ],
+   "pos": [
+    1.8,
+    1.9,
+    0.0
+   ],
+   "yaw": 180,
+   "aim": [
+    12,
+    0
+   ]
+  },
+  {
+   "name": "beam2",
+   "profile": "djxfli_beam90",
+   "address": 91,
+   "groups": [
+    "movers",
+    "beams"
+   ],
+   "pos": [
+    0.6,
+    0.65,
+    3.05
+   ]
+  },
+  {
+   "name": "spider2",
+   "profile": "jcyw_spider_8x10",
+   "address": 111,
+   "groups": [
+    "movers",
+    "spiders"
+   ],
+   "pos": [
+    1.42,
+    0.65,
+    2.45
+   ],
+   "yaw": 15,
+   "pitch": 75,
+   "roll": 90
+  }
+ ]
+}

@@ -1,0 +1,73 @@
+{
+ "name": "generic_moving_head_16bit_11ch",
+ "maker": "generic",
+ "model": "RGBW moving head with 16-bit pan/tilt, 11-channel (pan pan_fine tilt tilt_fine speed dimmer strobe R G B W)",
+ "type": "moving_head",
+ "status": "template",
+ "source": "generic template: the most common channel layout for this class of light. Check your light's manual: if the channel order differs, copy this file or build one with `python3 lighting/dj.py fixtures new`.",
+ "notes": "",
+ "pan_deg": 540,
+ "tilt_deg": 270,
+ "channels": {
+  "pan": {
+   "role": "pan"
+  },
+  "pan_fine": {
+   "role": "pan_fine"
+  },
+  "tilt": {
+   "role": "tilt"
+  },
+  "tilt_fine": {
+   "role": "tilt_fine"
+  },
+  "speed": {
+   "role": "speed",
+   "notes": "pan/tilt speed, 0 = fastest"
+  },
+  "dimmer": {
+   "role": "dimmer"
+  },
+  "strobe": {
+   "role": "strobe"
+  },
+  "red": {
+   "role": "red"
+  },
+  "green": {
+   "role": "green"
+  },
+  "blue": {
+   "role": "blue"
+  },
+  "white": {
+   "role": "white"
+  }
+ },
+ "modes": {
+  "11ch": [
+   "pan",
+   "pan_fine",
+   "tilt",
+   "tilt_fine",
+   "speed",
+   "dimmer",
+   "strobe",
+   "red",
+   "green",
+   "blue",
+   "white"
+  ]
+ },
+ "default_mode": "11ch",
+ "optics": {
+  "beam_deg": 12,
+  "lumens": 1200,
+  "aperture": 0.05,
+  "body": [
+   0.2,
+   0.15,
+   0.3
+  ]
+ }
+}

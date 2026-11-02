@@ -1,0 +1,148 @@
+{
+ "name": "jcyw_spider_8x10",
+ "maker": "JCYW FLODY",
+ "model": "8x10W spider moving head WSF-01 (B08P5YZ11V)",
+ "type": "spider",
+ "status": "verified",
+ "source": "owner read the unit's printed 15-channel chart 2026-10-12 (same layout as QLC+ U`King ZQ-B20 Mini Spider); LED colours checked one by one on the unit: LED1-4 = R,G,B,W (LED1 bottom, stage left), LED5-8 = R,G,B,W (LED5 top, stage right).",
+ "notes": "Menu SLnd must be SL 1 (DMX). No pan channel under DMX; two bars tilt 120 deg each (ch1/ch2). Each LED has its own dimmer and a fixed colour, so colours are chosen by which LEDs are lit.",
+ "tilt_deg": 120,
+ "channels": {
+  "tilt1": {
+   "role": "tilt",
+   "head": 0,
+   "invert": true,
+   "notes": "Y1 runs opposite to the model's sense (owner, 2026-10-12: bars pointed out when the model said in)"
+  },
+  "tilt2": {
+   "role": "tilt",
+   "head": 1,
+   "notes": "Y2 mirrored vs Y1 on the unit; with Y1 inverted, Y2 needs no flag (owner checked in/out on 2026-10-12)"
+  },
+  "dimmer": {
+   "role": "dimmer",
+   "notes": "'total light'"
+  },
+  "strobe": {
+   "role": "strobe",
+   "notes": "0-9 no strobe, 10-250 strobe slow→fast"
+  },
+  "led1": {
+   "role": "cell",
+   "head": 0,
+   "rgb": [
+    1,
+    0,
+    0
+   ]
+  },
+  "led2": {
+   "role": "cell",
+   "head": 0,
+   "rgb": [
+    0,
+    1,
+    0
+   ]
+  },
+  "led3": {
+   "role": "cell",
+   "head": 0,
+   "rgb": [
+    0,
+    0,
+    1
+   ]
+  },
+  "led4": {
+   "role": "cell",
+   "head": 0,
+   "rgb": [
+    1,
+    1,
+    1
+   ]
+  },
+  "led5": {
+   "role": "cell",
+   "head": 1,
+   "rgb": [
+    1,
+    0,
+    0
+   ]
+  },
+  "led6": {
+   "role": "cell",
+   "head": 1,
+   "rgb": [
+    0,
+    1,
+    0
+   ]
+  },
+  "led7": {
+   "role": "cell",
+   "head": 1,
+   "rgb": [
+    0,
+    0,
+    1
+   ]
+  },
+  "led8": {
+   "role": "cell",
+   "head": 1,
+   "rgb": [
+    1,
+    1,
+    1
+   ]
+  },
+  "effect": {
+   "role": "program",
+   "notes": "0-7 no effect, higher = built-in effects; keep 0"
+  },
+  "effect_speed": {
+   "role": "program"
+  },
+  "reset": {
+   "role": "reset",
+   "notes": "hold high ~5 s to reset"
+  }
+ },
+ "modes": {
+  "15ch": [
+   "tilt1",
+   "tilt2",
+   "dimmer",
+   "strobe",
+   "led1",
+   "led2",
+   "led3",
+   "led4",
+   "led5",
+   "led6",
+   "led7",
+   "led8",
+   "effect",
+   "effect_speed",
+   "reset"
+  ]
+ },
+ "default_mode": "15ch",
+ "optics": {
+  "beam_deg": 6,
+  "lumens": 250,
+  "aperture": 0.015,
+  "bar_offset": 0.045,
+  "cell_pitch": 0.035,
+  "cell_fan_deg": 7,
+  "body": [
+   0.28,
+   0.14,
+   0.15
+  ],
+  "notes": "per 10 W LED cell; two parallel bars side by side, each tilting about its long axis; bar 2 is the mirrored twin (LED5 at the opposite end from LED1)"
+ }
+}

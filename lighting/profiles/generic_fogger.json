@@ -1,0 +1,29 @@
+{
+ "name": "generic_fogger",
+ "maker": "generic",
+ "model": "1-channel DMX fog/haze machine",
+ "type": "haze",
+ "status": "guess",
+ "source": "most budget foggers: ch1 0 = off, high = output. Check the machine's manual for a fan channel.",
+ "channels": {
+  "output": {
+   "role": "haze"
+  }
+ },
+ "modes": {
+  "1ch": [
+   "output"
+  ]
+ },
+ "default_mode": "1ch",
+ "optics": {
+  "beam_deg": 0,
+  "lumens": 0,
+  "aperture": 0.05,
+  "body": [
+   0.4,
+   0.2,
+   0.2
+  ]
+ }
+}

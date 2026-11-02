@@ -1,0 +1,69 @@
+{
+ "name": "generic_par_rgbwauv_10ch",
+ "maker": "generic",
+ "model": "RGBWA+UV par, 10-channel (dimmer R G B W A UV strobe mode speed)",
+ "type": "par",
+ "status": "template",
+ "source": "generic template: the most common channel layout for this class of light. Check your light's manual: if the channel order differs, copy this file or build one with `python3 lighting/dj.py fixtures new`.",
+ "notes": "",
+ "channels": {
+  "dimmer": {
+   "role": "dimmer"
+  },
+  "red": {
+   "role": "red"
+  },
+  "green": {
+   "role": "green"
+  },
+  "blue": {
+   "role": "blue"
+  },
+  "white": {
+   "role": "white"
+  },
+  "amber": {
+   "role": "amber"
+  },
+  "uv": {
+   "role": "uv"
+  },
+  "strobe": {
+   "role": "strobe",
+   "notes": "0 = no strobe, higher = faster (most units: 0-9 off)"
+  },
+  "mode": {
+   "role": "program",
+   "notes": "built-in programs / sound mode; keep 0 under DMX"
+  },
+  "program_speed": {
+   "role": "program",
+   "notes": "speed of the built-in programs"
+  }
+ },
+ "modes": {
+  "10ch": [
+   "dimmer",
+   "red",
+   "green",
+   "blue",
+   "white",
+   "amber",
+   "uv",
+   "strobe",
+   "mode",
+   "program_speed"
+  ]
+ },
+ "default_mode": "10ch",
+ "optics": {
+  "beam_deg": 25,
+  "lumens": 700,
+  "aperture": 0.08,
+  "body": [
+   0.17,
+   0.13,
+   0.18
+  ]
+ }
+}

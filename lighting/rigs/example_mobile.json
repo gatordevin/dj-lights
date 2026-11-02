@@ -1,0 +1,163 @@
+{
+ "name": "example_mobile",
+ "notes": "Example mobile-DJ rig (made with lighting/patch.py): 4 RGBW pars uplighting the wall behind the DJ, 2 LED bars on stands, 2 moving heads + a spider on a goalpost truss. Copy it: dj.py rig new mine, then add your own lights.",
+ "venue": {
+  "template": "mobile",
+  "room": [
+   10.0,
+   10.0,
+   3.0
+  ],
+  "deck": [
+   2.0,
+   1.0,
+   0.0
+  ],
+  "haze": 0.3,
+  "audience": [
+   -5.0,
+   5.0,
+   -10.0,
+   -1.0
+  ],
+  "eye_z": [
+   1.0,
+   2.0
+  ],
+  "truss": [
+   1.4,
+   0.5,
+   2.6,
+   0.29
+  ]
+ },
+ "fixtures": [
+  {
+   "name": "par1",
+   "profile": "generic_par_rgbw_8ch",
+   "address": 1,
+   "where": "floor behind the dj",
+   "pos": [
+    -1.05,
+    1.4,
+    0.0
+   ],
+   "aim": [
+    36.4,
+    180.0
+   ]
+  },
+  {
+   "name": "par2",
+   "profile": "generic_par_rgbw_8ch",
+   "address": 11,
+   "where": "floor behind the dj",
+   "pos": [
+    -0.35,
+    1.4,
+    0.0
+   ],
+   "aim": [
+    36.4,
+    180.0
+   ]
+  },
+  {
+   "name": "par3",
+   "profile": "generic_par_rgbw_8ch",
+   "address": 21,
+   "where": "floor behind the dj",
+   "pos": [
+    0.35,
+    1.4,
+    0.0
+   ],
+   "aim": [
+    36.4,
+    180.0
+   ]
+  },
+  {
+   "name": "par4",
+   "profile": "generic_par_rgbw_8ch",
+   "address": 31,
+   "where": "floor behind the dj",
+   "pos": [
+    1.05,
+    1.4,
+    0.0
+   ],
+   "aim": [
+    36.4,
+    180.0
+   ]
+  },
+  {
+   "name": "bar1",
+   "profile": "generic_ledbar_4seg_rgb_12ch",
+   "address": 41,
+   "where": "on stands either side",
+   "pos": [
+    -1.8,
+    0.3,
+    2.4
+   ],
+   "aim": [
+    122.8,
+    15.9
+   ]
+  },
+  {
+   "name": "bar2",
+   "profile": "generic_ledbar_4seg_rgb_12ch",
+   "address": 61,
+   "where": "on stands either side",
+   "pos": [
+    1.8,
+    0.3,
+    2.4
+   ],
+   "aim": [
+    122.8,
+    -15.9
+   ]
+  },
+  {
+   "name": "mover1",
+   "profile": "generic_moving_head_rgbw_9ch",
+   "address": 81,
+   "where": "on the truss",
+   "pos": [
+    -0.63,
+    0.5,
+    2.48
+   ],
+   "mount": "hung"
+  },
+  {
+   "name": "mover2",
+   "profile": "generic_moving_head_rgbw_9ch",
+   "address": 91,
+   "where": "on the truss",
+   "pos": [
+    0.63,
+    0.5,
+    2.48
+   ],
+   "mount": "hung"
+  },
+  {
+   "name": "spider1",
+   "profile": "jcyw_spider_8x10",
+   "address": 101,
+   "where": "truss center",
+   "pos": [
+    0.0,
+    0.5,
+    2.48
+   ],
+   "mount": "hung",
+   "pitch": 45.0
+  }
+ ]
+}

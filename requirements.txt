@@ -1,0 +1,2 @@
+numpy>=1.24
+# optional, for vocal detection only (in a separate venv, see README): torch, demucs

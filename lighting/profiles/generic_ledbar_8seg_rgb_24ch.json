@@ -1,0 +1,146 @@
+{
+ "name": "generic_ledbar_8seg_rgb_24ch",
+ "maker": "generic",
+ "model": "LED bar, 8 RGB segments (24-channel, R G B per segment, left to right)",
+ "type": "bar",
+ "status": "template",
+ "source": "generic template: the most common channel layout for this class of light. Check your light's manual: if the channel order differs, copy this file or build one with `python3 lighting/dj.py fixtures new`.",
+ "notes": "Each segment is one head: chases and spreads run along the bar. Many bars also have a dimmer/strobe mode with more channels; pick the pure RGB-per-segment mode on the unit.",
+ "channels": {
+  "red1": {
+   "role": "red",
+   "head": 0
+  },
+  "green1": {
+   "role": "green",
+   "head": 0
+  },
+  "blue1": {
+   "role": "blue",
+   "head": 0
+  },
+  "red2": {
+   "role": "red",
+   "head": 1
+  },
+  "green2": {
+   "role": "green",
+   "head": 1
+  },
+  "blue2": {
+   "role": "blue",
+   "head": 1
+  },
+  "red3": {
+   "role": "red",
+   "head": 2
+  },
+  "green3": {
+   "role": "green",
+   "head": 2
+  },
+  "blue3": {
+   "role": "blue",
+   "head": 2
+  },
+  "red4": {
+   "role": "red",
+   "head": 3
+  },
+  "green4": {
+   "role": "green",
+   "head": 3
+  },
+  "blue4": {
+   "role": "blue",
+   "head": 3
+  },
+  "red5": {
+   "role": "red",
+   "head": 4
+  },
+  "green5": {
+   "role": "green",
+   "head": 4
+  },
+  "blue5": {
+   "role": "blue",
+   "head": 4
+  },
+  "red6": {
+   "role": "red",
+   "head": 5
+  },
+  "green6": {
+   "role": "green",
+   "head": 5
+  },
+  "blue6": {
+   "role": "blue",
+   "head": 5
+  },
+  "red7": {
+   "role": "red",
+   "head": 6
+  },
+  "green7": {
+   "role": "green",
+   "head": 6
+  },
+  "blue7": {
+   "role": "blue",
+   "head": 6
+  },
+  "red8": {
+   "role": "red",
+   "head": 7
+  },
+  "green8": {
+   "role": "green",
+   "head": 7
+  },
+  "blue8": {
+   "role": "blue",
+   "head": 7
+  }
+ },
+ "modes": {
+  "24ch": [
+   "red1",
+   "green1",
+   "blue1",
+   "red2",
+   "green2",
+   "blue2",
+   "red3",
+   "green3",
+   "blue3",
+   "red4",
+   "green4",
+   "blue4",
+   "red5",
+   "green5",
+   "blue5",
+   "red6",
+   "green6",
+   "blue6",
+   "red7",
+   "green7",
+   "blue7",
+   "red8",
+   "green8",
+   "blue8"
+  ]
+ },
+ "default_mode": "24ch",
+ "optics": {
+  "beam_deg": 30,
+  "lumens": 1200,
+  "aperture": 0.04,
+  "body": [
+   1.0,
+   0.08,
+   0.08
+  ]
+ }
+}
