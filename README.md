@@ -47,3 +47,6 @@ No API keys are needed (the Open Fixture Library is fetched anonymously from Git
 
 ## Tests
 `python3 run_tests.py` (simulation only — never drives real lights).
+
+## License
+MIT — see `LICENSE`. Open Fixture Library data you import is MIT-licensed by its contributors.

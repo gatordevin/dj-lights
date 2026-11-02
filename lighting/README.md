@@ -92,6 +92,7 @@ python3 lighting/dj.py live --clock link --audio rekordbox      # live set: foll
 | `motion.py` | **moving-head physics**: `MotorSim` (per-axis top speed + acceleration, from `Fixture.max_speed()` = rig/profile/type speed slowed by the speed channel), `move_time`, `audit` (share of lit time a head is still travelling) |
 | `export.py` | **exports**: QLC+ 4 workspace (patched fixtures + generated .qxf definitions + baked Sequence + audio on a Show timeline; tags checked against QLC+ source, not yet opened in QLC+), DMX frame CSV, cue CSV, MIDI cue track (tempo, markers, notes), patch CSV, native JSON, zip + README |
 | `mcp_server.py` | **MCP server** (stdio JSON-RPC, stdlib): 32 tools — status, rigs/lights/venue editing, fixtures/OFL/profiles, analyze/fix grid, make/preview/edit shows, 3D snapshot, play/simulate/seek/live/manual/pads/master/stop, test/point, export, open the web app, settings |
+| `httpguard.py` | request guard for the local web servers: localhost-only Host names (bare IPs with `--lan`), same-origin POSTs with a JSON/binary Content-Type — blocks DNS rebinding and cross-site requests (there is no login) |
 | `stems.py` | vocal-activity worker run in the stems Python (torch + demucs; `LIGHTING_STEMS_PY`) for `songmap --vocals` |
 
 Profiles (`profiles/*.json`, status = how much is proven):
@@ -168,6 +169,7 @@ python3 lighting/fixtures.py rig                        # address sheet
   (grid within 15 ms, sections exactly as built). These are agreement numbers: rekordbox itself is sometimes off.
 - Sections/drops are energy heuristics (bass + kick returning after a low stretch, snapped to 4-bar phrases); no ground truth
   was available beyond synthetic songs and spot checks (Spooky: drops 9/33/65 vs rekordbox's bass cut at 31-33).
+
 
 ## Limits
 - One universe, one dongle (FTDI "Open DMX" style; Enttec Pro / SoundSwitch interfaces not supported). User-space timing.
