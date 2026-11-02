@@ -84,8 +84,10 @@ eng.hold("strobe", [{"group": "all", "effect": "strobe", "rate": 1.0}]); eng.fra
 check(eng.rig["beam1"].levels[5] == 255, "hold overlays strobe on the running cue")
 eng.hold("strobe", None); eng.frame(t0); check(eng.rig["beam1"].levels[5] == 0, "hold released")
 eng2 = S.Engine(F.Rig.load("halloween"), bpm=120)
-for _ in range(4): eng2.tap(); time.sleep(0.25)
-check(200 < eng2.bpm < 280, f"tap tempo ~240 bpm from 0.25 s taps (got {eng2.bpm:.0f})")
+taps = []
+for _ in range(4): taps.append(time.monotonic()); eng2.tap(); time.sleep(0.25)
+want = 60 / ((taps[-1] - taps[0]) / 3)                                # judge against the real tap spacing (CI sleeps jitter)
+check(abs(eng2.bpm - want) < 4 and 150 < eng2.bpm < 300, f"tap tempo = 60 / mean tap interval ({eng2.bpm:.0f} vs {want:.0f})")
 eng2.pause(True); b0 = eng2.beat(); time.sleep(0.15); eng2.set_bpm(150)
 check(eng2.beat() == b0 and eng2.state()["paused"], "pause freezes the beat (even across a tempo change)")
 eng2.pause(False); time.sleep(0.1); check(0 < eng2.beat() - b0 < 0.5, "resume continues from the frozen beat")

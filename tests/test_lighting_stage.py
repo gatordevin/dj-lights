@@ -91,6 +91,6 @@ try:
         sat = sum(1 for i in range(0, len(px), 3) if max(px[i:i + 3]) - min(px[i:i + 3]) > 60)
         check(sat > 50, f"scale {scale}: coloured beams visible ({sat} saturated px)")
     gpu = "gpu frame ok"
-except OSError as e:
+except (OSError, RuntimeError) as e:                                   # headless CI Macs have no accelerated GL
     gpu = f"gpu skipped ({e})"
 print(f"ok: lighting stage3d (emitters, occlusion, eye hazards, audit, AutoOutput hot-plug; {gpu})")
