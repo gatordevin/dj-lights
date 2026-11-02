@@ -13,7 +13,7 @@ Python:
   s = Sender(universe, [outputs], fps=30).start()   background thread re-sending the universe forever (fixtures expect
        continuous refresh; many fall back to auto/sound mode or blackout when DMX stops). s.fps_actual, s.frames, s.errors,
        s.stop(blackout=True) sends a few all-zero frames before closing.
-  find_ports() -> [{"port", "usb", "known", "ftdi"}]  serial ports, FTDI first; "auto" only ever selects an FTDI one
+  find_ports() -> [{"port", "usb", "known", "ftdi"}]  serial ports, FTDI first (macOS: IORegistry; Linux: /dev/ttyUSB* + sysfs vendor id); "auto" only ever selects an FTDI one
        (an Arduino/RoboClaw/ESP32 must never receive DMX bytes by accident)
 Contract: channels 1..512 and values 0..255 (ValueError/TypeError otherwise); frame() is a fresh 512-byte copy.
   OpenDMX raises FileNotFoundError for a missing port, OSError(EBUSY) if another program (QLC+, SoundSwitch) holds it.
@@ -193,11 +193,26 @@ class AutoOutput:
         if self.dev: self.dev.close(); self.dev = None
 
 
+def _linux_ports():
+    """Linux: /dev/ttyUSB* with the USB vendor id read from sysfs (FTDI = 0x0403)."""
+    import glob, os
+    out = []
+    for p in sorted(glob.glob("/dev/ttyUSB*")):
+        vid, name = None, ""
+        d = os.path.realpath(f"/sys/class/tty/{os.path.basename(p)}/device")
+        for _ in range(6):                                                    # walk up to the USB device node
+            try: vid = int(open(os.path.join(d, "idVendor")).read().strip(), 16); name = open(os.path.join(d, "product")).read().strip(); break
+            except (OSError, ValueError): d = os.path.dirname(d)
+        out.append({"port": p, "usb": name, "known": "", "ftdi": vid == 0x0403})
+    return out
+
+
 def find_ports():
-    import glob
+    import glob, sys
+    if sys.platform.startswith("linux"): return sorted(_linux_ports(), key=lambda r: (not r["ftdi"], r["port"]))
     from hw.usb import devices
     try: owner = {p: d for d in devices() for p in d.ports}
-    except RuntimeError: owner = {}
+    except (RuntimeError, OSError): owner = {}
     out = []
     for p in sorted(set(glob.glob("/dev/cu.usbserial*")) | {p for p in owner}):
         d = owner.get(p)

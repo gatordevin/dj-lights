@@ -1,0 +1,17 @@
+name: Fixture / light support
+description: A light that doesn't work right or needs a profile
+labels: [fixture]
+body:
+  - type: input
+    id: model
+    attributes: {label: Maker and model, placeholder: "e.g. Chauvet SlimPAR Pro H USB"}
+    validations: {required: true}
+  - type: input
+    id: mode
+    attributes: {label: DMX mode set on the light, placeholder: "e.g. 12CH (display shows Ch12)"}
+  - type: textarea
+    id: chart
+    attributes: {label: Channel chart from the manual, description: "Channel number → function, as printed (a photo link is fine)."}
+  - type: textarea
+    id: seen
+    attributes: {label: "What `dj.py test RIG LIGHT` did on the real light"}

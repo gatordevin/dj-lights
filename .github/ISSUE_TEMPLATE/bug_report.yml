@@ -1,0 +1,17 @@
+name: Bug report
+description: Something doesn't work
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes: {label: What happened, description: "What you did, what you expected, what happened instead."}
+    validations: {required: true}
+  - type: textarea
+    id: doctor
+    attributes: {label: "Output of `python3 lighting/dj.py doctor`", render: text}
+  - type: input
+    id: lights
+    attributes: {label: Your lights and DMX interface, placeholder: "e.g. 4x RGBW par 8ch, 2x moving head 9ch, DSD TECH USB-DMX"}
+  - type: input
+    id: os
+    attributes: {label: OS and Python version, placeholder: "macOS 15, Python 3.12"}

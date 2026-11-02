@@ -5,7 +5,7 @@ Drive real DMX512 fixtures from this Mac (USB→DMX dongle) by meaning — colou
 follow rekordbox/djay over Ableton Link and react to live audio; see and check everything in a 3D model of the venue.
 **Any DJ, any lights, any song:** `dj.py` is the front door — patch your own lights in plain words, analyse any music or
 video file (beats, bars, drops, builds, breakdowns), make a show for whatever lights you have, play it in sync, or run live
-from your DJ software. Agents: read `lighting/SKILL.md` first.
+from your DJ software. Agents: read `skills/dj-lighting/SKILL.md` first.
 
 ## DJ quick start (any rig, any song)
 **Easiest: the web app** — `python3 lighting/dj.py web --open` (http://127.0.0.1:8790): pick/drop a song → its beats, drops and
@@ -104,7 +104,7 @@ Profiles (`profiles/*.json`, status = how much is proven):
 | `coz_par36_rgb` | CO-Z 36-LED RGB par, display `d021` = DMX at 21: dimmer, R, G, B, strobe, program, speed | partial (dimmer + green verified) |
 | `uking_laser_zq05031` | U`King ZQ05031 laser, 6CH simple mode | documented (official manual) |
 | `generic_fogger` | 1-channel fog/haze | guess |
-| `generic_*` (17) | templates for common DJ lights: dimmer 1ch, RGB 3/4/5/7ch, RGBW 4/8ch, RGBWA+UV 6/10ch, LED bars 4/8 segments, moving heads RGBW 9ch / 16-bit 11ch, colour-wheel spot 8ch, strobe 2ch | template (check the manual) |
+| `generic_*` (15 + fogger) | templates for common DJ lights: dimmer 1ch, RGB 3/4/5/7ch, RGBW 4/8ch, RGBWA+UV 6/10ch, LED bars 4/8 segments, moving heads RGBW 9ch / 16-bit 11ch, colour-wheel spot 8ch, strobe 2ch | template (check the manual) |
 | `ofl_*` | imported from the Open Fixture Library (`dj.py fixtures import maker/key`) | ofl (community data) |
 
 Profile extras (lighting/fixtures): channel `"default"` (resting value: shutter open, gobo open), strobe `"strobe_range"`,

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "dj-lights": {
+      "command": "python3",
+      "args": ["lighting/mcp_server.py"]
+    }
+  }
+}

@@ -1,0 +1,8 @@
+name: Feature request
+description: An idea to make it better
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes: {label: What would you like, description: "Describe the gig/setup and what you'd want the lights or app to do."}
+    validations: {required: true}
